@@ -10,7 +10,7 @@
    <tt>連絡一覧</tt>
    <tt>投稿</tt>
 
-		<table border=1>
+		 <table border=1>
 
 			<c:forEach var="student" items="${ students }">
 				<tr>

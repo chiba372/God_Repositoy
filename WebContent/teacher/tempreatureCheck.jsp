@@ -7,7 +7,7 @@
 
 	<c:param name="content">
 
-	<tt>体温一覧</tt>
+	 <tt>体温一覧</tt>
 
 		<table border=1>
 			<tr>

@@ -8,9 +8,9 @@
 	<c:param name="content">
 
 	<tt>体温一覧</tt>
-	<tt>投稿</tt>
+	 <tt>投稿</tt>
 
-		<table border=1>
+	 	<table border=1>
 			<tr>
 				<th>日付</th>
 			</tr>

@@ -7,7 +7,7 @@
 
 
 <c:param name="content">
-    <div class="postcontainer">
+     <div class="postcontainer">
         <div class="posttitle">連絡投稿</div>
         <form action="submitContact.jsp" method="post">
             <div class="postform-group">

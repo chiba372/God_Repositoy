@@ -15,7 +15,7 @@
 				<th>出席番号</th>
 				<th>名前</th>
 			</tr>
-			<c:forEach var="student" items="${ students }">
+ 	<c:forEach var="student" items="${ students }">
 				<tr>
 					<td>${ student.student_id }</td>
 					<td>${ student.student_name }</td>
