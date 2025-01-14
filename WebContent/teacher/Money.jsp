@@ -6,7 +6,7 @@
 <c:param name="title">集金一覧</c:param>
 
    <c:param name="content">
-   
+
    <tt>集金一覧</tt>
 
 		<table border=1>
