@@ -1,4 +1,4 @@
-package chapter24;
+package teacher;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import tool.CommonServlet;
 
-@WebServlet(urlPatterns = { "/chapter24/logout" })
+@WebServlet(urlPatterns = { "/teacher/logout" })
 public class LogoutController extends CommonServlet {
 
 	@Override
@@ -15,9 +15,9 @@ public class LogoutController extends CommonServlet {
 		HttpSession session = req.getSession();
 
 		// ログインしている場合
-		if (session.getAttribute("session_customer") != null) {
+		if (session.getAttribute("session_teacher") != null) {
 			// セッションから除去してログアウト
-			session.removeAttribute("session_customer");
+			session.removeAttribute("session_teacher");
 			// ログアウト完了ページを表示
 			req.getRequestDispatcher("logout-out.jsp").forward(req, resp);
 			return;

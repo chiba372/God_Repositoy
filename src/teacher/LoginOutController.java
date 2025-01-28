@@ -1,4 +1,4 @@
-package chapter25;
+package teacher;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -6,14 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import tool.CommonServlet;
 
-@WebServlet(urlPatterns = { "/chapter25/cart" })
-public class CartController extends CommonServlet {
+@WebServlet(urlPatterns = { "/teacher/login-out" })
+public class LoginOutController extends CommonServlet {
 
 	@Override
 	public void get(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-
-		req.getRequestDispatcher("cart.jsp").forward(req, resp);
-
+		req.getRequestDispatcher("login-out.jsp").forward(req, resp);
 	}
 
 	@Override
