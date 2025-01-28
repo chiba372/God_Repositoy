@@ -1,86 +1,74 @@
 <%@page contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<html>
-<head>
-    <title>ログイン</title>
-     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
-        }
-
-        .login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 300px;
-        }
-
-        .input-container {
-            margin: 10px 0;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"], input[type="password"] {
-            padding: 10px;
-            width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 0.9em;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <form action="login" method="post">
-            <div class="input-container">
-                <label for="login">教員ID</label>
-                <input type="text" id="login" name="login" required>
+<c:import url="/menu.jsp">
+    <c:param name="title">ログイン</c:param>
+    <c:param name="content">
+        <form action="login" method="post" class="login-form">
+            <div class="form-group">
+                <label for="name">教員名</label>
+                <input type="text" name="name" id="name" required>
             </div>
-            <div class="input-container">
+            <div class="form-group">
                 <label for="password">パスワード</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" name="password" id="password" required>
             </div>
-            <div class="input-container">
+            <div class="form-group">
                 <input type="submit" value="ログイン">
             </div>
-
-            <!-- エラーメッセージを表示 -->
-            <c:if test="${not empty errorMessage}">
-                <p class="error-message">${errorMessage}</p>
-            </c:if>
+            <p>${ errorMessage }</p>
         </form>
-    </div>
-</body>
-</html>
+    </c:param>
+</c:import>
+
+<style>
+    /* フォームの横幅を制限 */
+    .login-form {
+        width: 100%; /* 親要素の幅を100%に設定 */
+        max-width: 400px; /* 最大幅を400pxに設定 */
+        margin: 0 auto; /* 中央寄せ */
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    /* 各フォームグループ */
+    .form-group {
+        margin-bottom: 20px; /* 各フォームグループの間にスペースを空ける */
+    }
+
+    .form-group label {
+        display: block; /* ラベルをブロック要素にして縦に並べる */
+        margin-bottom: 5px; /* ラベルと入力フィールドの間にスペースを空ける */
+        font-weight: bold; /* ラベルのテキストを太字に */
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="password"] {
+        width: 100%; /* 入力ボックスを親要素の幅に合わせる */
+        padding: 10px; /* 入力ボックス内に余白を加える */
+        border: 1px solid #ccc; /* ボーダーを追加 */
+        border-radius: 4px; /* 角を丸くする */
+        box-sizing: border-box; /* パディングとボーダーを含めて幅を計算 */
+    }
+
+    .form-group input[type="submit"] {
+        width: 100%; /* ボタンを入力フィールドと同じ幅に */
+        padding: 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .form-group input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    /* エラーメッセージのスタイル */
+    .error-message {
+        color: red;
+        margin-top: 10px;
+    }
+</style>

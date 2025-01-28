@@ -32,7 +32,7 @@ public abstract class CommonServlet extends HttpServlet {
 		}
 	}
 
-	public abstract void get(HttpServletRequest req, HttpServletResponse resp) throws Exception;
+	protected abstract void get(HttpServletRequest req, HttpServletResponse resp) throws Exception;
 
-	public abstract void post(HttpServletRequest req, HttpServletResponse resp) throws Exception;
+	protected abstract void post(HttpServletRequest req, HttpServletResponse resp) throws Exception;
 }

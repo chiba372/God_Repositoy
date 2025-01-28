@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import bean.Customer;
+import bean.Teacher;
 
 public class CustomerDAO extends DAO {
 	/**
@@ -17,28 +17,28 @@ public class CustomerDAO extends DAO {
 	 * @return 一致するデータが存在する：Customer、存在しない：null
 	 * @throws Exception
 	 */
-	public Customer search(String login, String password) throws Exception {
-		Customer customer = null;
+	public Teacher search(String name, String password) throws Exception {
+		Teacher teacher = null;
 
 		Connection con = getConnection();
 
 		PreparedStatement st;
-		st = con.prepareStatement("select * from customer where login=? and password=?");
-		st.setString(1, login);
+		st = con.prepareStatement("select * from teacher where name=? and password=?");
+		st.setString(1, name);
 		st.setString(2, password);
 		ResultSet rs = st.executeQuery();
 
 		if (rs.next()) {
-			customer = new Customer();
-			customer.setId(rs.getInt("id"));
-			customer.setLogin(rs.getString("login"));
-			customer.setPassword(rs.getString("password"));
+			teacher = new Teacher();
+			teacher.setId(rs.getInt("id"));
+			teacher.setName(rs.getString("name"));
+			teacher.setPassword(rs.getString("password"));
 		}
 
 		st.close();
 		con.close();
 
-		return customer;
+		return teacher;
 	}
 
 	/**
@@ -49,13 +49,13 @@ public class CustomerDAO extends DAO {
 	 * @return 成功:1, 失敗:0
 	 * @throws Exception
 	 */
-	public int insert(String login, String hashedPassword) throws Exception {
+	public int insert(String name, String hashedPassword) throws Exception {
 
 		Connection con = getConnection();
 
 		PreparedStatement st;
-		st = con.prepareStatement("insert into customer values(null, ?, ?)");
-		st.setString(1, login);
+		st = con.prepareStatement("insert into teacher values(null, ?, ?)");
+		st.setString(1, name);
 		st.setString(2, hashedPassword);
 		int line = st.executeUpdate();
 
@@ -70,14 +70,14 @@ public class CustomerDAO extends DAO {
 	 * @return 認証成功:Customer, 認証失敗:null
 	 * @throws Exception
 	 */
-	public Customer login(String login, String password) throws Exception {
+	public Teacher name(String name, String password) throws Exception {
 
 		Connection con = getConnection();
 
 		// ログイン名をもとにユーザーを検索
 		PreparedStatement st;
-		st = con.prepareStatement("select * from customer where login=?");
-		st.setString(1, login);
+		st = con.prepareStatement("select * from teacher where name=?");
+		st.setString(1, name);
 		ResultSet rs = st.executeQuery();
 
 		// ログイン名が一致するユーザーが存在した場合
@@ -85,10 +85,10 @@ public class CustomerDAO extends DAO {
 			BCryptPasswordEncoder bcpe = new BCryptPasswordEncoder();
 			// 生パスワードと、DBに保存されたパスワードのハッシュ値を比較
 			if (bcpe.matches(password, rs.getString("password"))) {
-				Customer customer = new Customer();
-				customer.setId(rs.getInt("id"));
-				customer.setLogin(rs.getString("login"));
-				return customer;
+				Teacher teacher = new Teacher();
+				teacher.setId(rs.getInt("id"));
+				teacher.setName(rs.getString("name"));
+				return teacher;
 			}
 		}
 

@@ -1,11 +1,10 @@
-<Context reloadable="true">
-	<Resource
-		name="jdbc/Team-E"
-		auth="Container"
-		type="javax.sql.DataSource"
-		driverClassName="org.h2.Driver"
-		url="jdbc:h2:tcp://localhost/~/shop"
-		username="sa"
-		password=""
-	/>
+<Context>
+    <Resource name="jdbc/SchoolOrganizer"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="org.h2.Driver"
+              url="jdbc:h2:tcp://localhost/~/javasd/teamE/SchoolOrganizer"
+              username="sa"
+              password=""
+              />
 </Context>
