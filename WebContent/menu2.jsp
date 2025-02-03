@@ -1,11 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="bean.Teacher" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理メニュー</title>
+    <title>メニュー</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,20 +29,6 @@
         .user-info {
             display: flex;
             align-items: center;
-        }
-        .user-info span {
-            margin-right: 15px;  /* 教員名とログアウトボタンの間隔を開ける */
-        }
-        .user-info form {
-            margin-left: 15px;  /* ログアウトボタンと教員名の間隔を開ける */
-        }
-        .user-info a {
-            margin-left: 20px;  /* 担当ページへのリンクとログアウトボタンの間隔 */
-            text-decoration: none;
-            color: #007bff;
-        }
-        .user-info a:hover {
-            text-decoration: underline;
         }
         .nav-menu {
             display: flex;
@@ -85,33 +72,43 @@
         .footer button:hover {
             background-color: #e2e6ea;
         }
+        .login-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-
+    <!-- ヘッダー -->
     <div class="header">
-        <h1>管理メニュー</h1>
-
+        <h1>メニュー</h1>
         <div class="user-info">
-            <!-- ログインした教員名の表示を削除 -->
-            <form action="/Team-E/menu.jsp" method="post" style="display:inline;">
-                <input type="submit" value="ログアウト" />
-            </form>
-            <!-- 担当ページのリンク -->
-            <a href="/Team-E/teacher/yourpage.jsp" style="margin-left: 20px;">担当ページへ</a>
+            <%
+                Teacher teacher = (Teacher) session.getAttribute("session_teacher");
+                if (teacher != null) {
+                    String teacherName = teacher.getName();
+                    out.print(teacherName + "さん、ログイン中");
+                } else {
+                    out.print("ログインしてください");
+                }
+            %>
         </div>
     </div>
 
+    <!-- ナビゲーションメニュー -->
     <div class="nav-menu">
-        <a href="/Team-E/teacher/calendar.jsp">カレンダー</a>
+    <a href="/Team-E/teacher/calendar">カレンダー</a>
         <a href="/Team-E/teacher/post">連絡</a>
         <a href="/Team-E/teacher/money">集金</a>
-        <a href="/Team-E/teacher/temperature">体温</a>
+        <a href="/Team-E/teacher/temperature">体温一覧</a>
         <a href="/Team-E/teacher/children">児童</a>
-    </div>
-
-    <div class="content">
-        <p>${ param.content }</p>
     </div>
 
 </body>

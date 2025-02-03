@@ -31,6 +31,13 @@ public class LoginController extends CommonServlet {
         if (teacher != null) {
             // セッションにユーザー情報を保存
             session.setAttribute("session_teacher", teacher);
+
+            // ログインユーザー情報を取得
+            String teacherName = teacher.getName(); // 名前を取得
+
+            // セッションに教師の名前を保存（ページで使用）
+            session.setAttribute("teacherName", teacherName);
+
             // ログイン後のページにリダイレクト
             resp.sendRedirect("/Team-E/menu2.jsp");
             return;

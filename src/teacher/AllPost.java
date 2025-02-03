@@ -11,8 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.Allpost;
+import bean.Teacher;
 import dao.AllpostDAO;
 
 @WebServlet(urlPatterns = { "/teacher/post" })
@@ -89,6 +91,15 @@ public class AllPost extends HttpServlet {
             out.println("<h1>投稿一覧</h1>");
             out.println("<div class='user-info'>");
 
+            // ログインユーザー情報を取得
+            HttpSession session = req.getSession();
+            Teacher teacher = (Teacher) session.getAttribute("session_teacher"); // セッションからTeacherオブジェクトを取得
+
+            // ログインしている場合、教師の名前を表示
+            if (teacher != null) {
+                out.println( teacher.getName());
+            }
+
             // ログアウトボタンと担当ページへのリンク
             out.println("<form action='/Team-E/menu.jsp' method='post' style='display:inline;'>");
             out.println("<input type='submit' value='ログアウト' />");
@@ -101,7 +112,7 @@ public class AllPost extends HttpServlet {
             out.println("<div class='nav-menu'>");
             out.println("<a href='/Team-E/teacher/calendar.jsp'>カレンダー</a>");
             out.println("<a href='/Team-E/teacher/post'>連絡</a>");
-            out.println("<a href='/Team-E/teacher/oney'>集金</a>");
+            out.println("<a href='/Team-E/teacher/money'>集金</a>");
             out.println("<a href='/Team-E/teacher/temperature'>体温</a>");
             out.println("<a href='/Team-E/teacher/children'>児童</a>");
             out.println("</div>");
@@ -143,58 +154,25 @@ public class AllPost extends HttpServlet {
                 out.println("</div>");
             }
 
-            // 投稿フォームの表示（詳細ページが表示されていない場合のみ）
-            if (dateParam == null && nameParam == null && contentParam == null) {
-                out.println("<div class='form-container'>");
-                out.println("<h3>新しい投稿</h3>");
-                out.println("<form action='/Team-E/teacher/post' method='post'>");
-                out.println("<label for='name'>件名:</label><br>");
-                out.println("<input type='text' id='name' name='name' required><br><br>");
-                out.println("<label for='content'>内容:</label><br>");
-                out.println("<textarea id='content' name='content' required></textarea><br><br>");
-                out.println("<input type='submit' value='投稿'>");
-                out.println("</form>");
-                out.println("</div>");
-            }
+            // 投稿フォームの表示
+            out.println("<div class='form-container'>");
+            out.println("<h3>新規投稿</h3>");
+            out.println("<form action='/Team-E/teacher/post' method='post'>");
+            out.println("<label for='name'>件名:</label>");
+            out.println("<input type='text' id='name' name='name' required>");
 
-            out.println("<div class='footer'>");
-            out.println("<a href='/Team-E/teacher/post'>戻る</a>");
+            out.println("<label for='content'>内容:</label>");
+            out.println("<textarea id='content' name='content' rows='4' required></textarea>");
+
+            out.println("<input type='submit' value='投稿する'>");
+            out.println("</form>");
             out.println("</div>");
 
-            out.println("</body>");
-            out.println("</html>");
+            // フッター部分
 
         } catch (Exception e) {
-            e.printStackTrace(out);
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-        resp.setContentType("text/html; charset=UTF-8");
-
-        try {
-            // DAOをインスタンス化
-            AllpostDAO dao = new AllpostDAO();
-
-            // フォームデータを取得
-            String name = req.getParameter("name");
-            String content = req.getParameter("content");
-
-            // 新しい投稿をデータベースに追加
-            Allpost newPost = new Allpost();
-            newPost.setName(name);
-            newPost.setContent(content);
-            newPost.setDate(new Date());  // 現在の日付を設定
-
-            dao.insertPost(newPost);  // 新しい投稿をデータベースに追加
-
-            // 投稿後、投稿一覧ページにリダイレクト
-            resp.sendRedirect("/Team-E/teacher/post");
-
-        } catch (Exception e) {
-            e.printStackTrace(out);
+            e.printStackTrace();
+            out.println("<h2>エラーが発生しました</h2>");
         }
     }
 }

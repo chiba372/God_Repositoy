@@ -11,8 +11,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.Health;
+import bean.Teacher;
 import dao.HealthDAO;
 
 @WebServlet(urlPatterns = { "/teacher/temperature" })
@@ -24,6 +26,11 @@ public class AllTempreture extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         try {
+            // セッションからログイン者情報を取得
+            HttpSession session = req.getSession();
+            Teacher loggedInTeacher = (Teacher) session.getAttribute("loginTeacher");
+            String teacherName = (loggedInTeacher != null) ? loggedInTeacher.getName() : "ゲスト";
+
             // DAOをインスタンス化
             HealthDAO dao = new HealthDAO();
 
@@ -41,6 +48,8 @@ public class AllTempreture extends HttpServlet {
             out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
             out.println(".header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #f4f4f4; border-bottom: 1px solid #ddd; }");
             out.println(".header h1 { margin: 0; font-size: 24px; }");
+            out.println(".header .user-info { display: flex; align-items: center; }");
+            out.println(".header .user-info p { margin-right: 20px; font-size: 16px; color: #333; }");
             out.println(".nav-menu { display: flex; width: 100%; margin: 20px 0; }");
             out.println(".nav-menu a { display: block; padding: 15px; text-decoration: none; color: #333; border: 1px solid #ddd; margin: 0; text-align: center; width: 100%; box-sizing: border-box; }");
             out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
@@ -62,6 +71,14 @@ public class AllTempreture extends HttpServlet {
             out.println("<div class='header'>");
             out.println("<h1>体温一覧</h1>");
             out.println("<div class='user-info'>");
+         // ログインユーザー情報を取得
+            HttpSession session1 = req.getSession();
+            Teacher teacher = (Teacher) session1.getAttribute("session_teacher"); // セッションからTeacherオブジェクトを取得
+
+            // ログインしている場合、教師の名前を表示
+            if (teacher != null) {
+                out.println( teacher.getName());
+            }
 
             // ログアウトボタンと担当ページへのリンク
             out.println("<form action='/Team-E/menu.jsp' method='post' style='display:inline;'>");
@@ -75,7 +92,7 @@ public class AllTempreture extends HttpServlet {
             out.println("<div class='nav-menu'>");
             out.println("<a href='/Team-E/teacher/calendar.jsp'>カレンダー</a>");
             out.println("<a href='/Team-E/teacher/post'>連絡</a>");
-            out.println("<a href='/Team-E/teacher/oney'>集金</a>");
+            out.println("<a href='/Team-E/teacher/money'>集金</a>");
             out.println("<a href='/Team-E/teacher/temperature'>体温</a>");
             out.println("<a href='/Team-E/teacher/children'>児童</a>");
             out.println("</div>");

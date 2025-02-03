@@ -9,8 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bean.Student;
+import bean.Teacher;
 import dao.StudentDAO;
 
 @WebServlet(urlPatterns = { "/teacher/children" })
@@ -20,6 +22,10 @@ public class AllController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
         resp.setContentType("text/html; charset=UTF-8");
+
+        // セッションからTeacherオブジェクトを取得
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("session_teacher"); // セッションからログイン情報を取得
 
         try {
             // 学生をすべて取得
@@ -36,6 +42,8 @@ public class AllController extends HttpServlet {
             out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
             out.println(".header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #f4f4f4; border-bottom: 1px solid #ddd; }");
             out.println(".header h1 { margin: 0; font-size: 24px; }");
+            out.println(".header .user-info { display: flex; align-items: center; gap: 15px; }");
+            out.println(".header .user-info span { font-size: 16px; color: #555; }");
             out.println(".nav-menu { display: flex; width: 100%; margin: 20px 0; }");
             out.println(".nav-menu a { display: block; padding: 15px; text-decoration: none; color: #333; border: 1px solid #ddd; margin: 0; text-align: center; width: 100%; box-sizing: border-box; }");
             out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
@@ -57,6 +65,11 @@ public class AllController extends HttpServlet {
             out.println("<div class='header'>");
             out.println("<h1>学生一覧</h1>");
             out.println("<div class='user-info'>");
+
+            // ログインユーザー名を表示
+            if (teacher != null) {
+                out.println(teacher.getName() ); // Teacherオブジェクトから名前を表示
+            }
 
             // ログアウトボタンと担当ページへのリンク
             out.println("<form action='/Team-E/menu.jsp' method='post' style='display:inline;'>");
