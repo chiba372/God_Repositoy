@@ -49,40 +49,6 @@
         .nav-menu a:hover {
             background-color: #f0f0f0;
         }
-        .content {
-            padding: 20px;
-            text-align: center;
-            max-width: 8000px;
-            margin: 0 auto;
-        }
-        .footer {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 20px;
-            background-color: #f8f9fa;
-        }
-        .footer button {
-            padding: 10px 20px;
-            border: 1px solid #ccc;
-            background-color: #ffffff;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .footer button:hover {
-            background-color: #e2e6ea;
-        }
-        .login-btn {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .login-btn:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
@@ -94,9 +60,10 @@
                 Teacher teacher = (Teacher) session.getAttribute("session_teacher");
                 if (teacher != null) {
                     String teacherName = teacher.getName();
-                    out.print(teacherName + "さん、ログイン中");
-                } else {
-                    out.print("ログインしてください");
+                    out.print(teacherName);
+            %>
+            <a href="/Team-E/logout.jsp">ログアウト</a>
+            <%
                 }
             %>
         </div>
@@ -104,12 +71,11 @@
 
     <!-- ナビゲーションメニュー -->
     <div class="nav-menu">
-    <a href="/Team-E/teacher/calendar">カレンダー</a>
+        <a href="/Team-E/teacher/calendar.jsp">カレンダー</a>
         <a href="/Team-E/teacher/post">連絡</a>
         <a href="/Team-E/teacher/money">集金</a>
         <a href="/Team-E/teacher/temperature">体温一覧</a>
         <a href="/Team-E/teacher/children">児童</a>
     </div>
-
 </body>
 </html>

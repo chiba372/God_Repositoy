@@ -9,8 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import bean.StudentClass;
+import bean.Teacher;
 import dao.CatalogDAO;
+import dao.Student_ClassDAO;
 
 @WebServlet(urlPatterns = { "/teacher/money" })
 public class Allmoney extends HttpServlet {
@@ -21,90 +25,95 @@ public class Allmoney extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
 
         try {
-            String nameParam = req.getParameter("name");
+            // セッションからログイン者情報を取得
+            HttpSession session = req.getSession();
+            Teacher teacher = (Teacher) session.getAttribute("session_teacher");
+
+            // catalogテーブルから教材名を取得
             CatalogDAO catalogDAO = new CatalogDAO();
+            List<String> catalogNames = catalogDAO.getAllCatalogNames();
 
-            // 教材名が指定されていた場合、その教材に関連するSTUDENT_CLASSとNUMBERを表示
-            if (nameParam != null) {
-                List<String[]> classAndNumberList = catalogDAO.getClassAndNumberByName(nameParam);
-
-                // HTML出力
-                out.println("<!DOCTYPE html>");
-                out.println("<html lang='ja'>");
-                out.println("<head>");
-                out.println("<meta charset='UTF-8'>");
-                out.println("<title>集金</title>");
-                out.println("<style>");
-                out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
-                out.println(".header { background-color: #f4f4f4; padding: 20px; text-align: center; }");
-                out.println(".header h1 { margin: 0; font-size: 24px; }");
-                out.println(".content { padding: 20px; max-width: 800px; margin: 0 auto; }");
-                out.println(".catalog-list { list-style-type: none; padding: 0; }");
-                out.println(".catalog-list li { padding: 10px; background-color: #f9f9f9; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; }");
-                out.println(".catalog-list li:hover { background-color: #f1f1f1; }");
-                out.println("table { width: 100%; border-collapse: collapse; margin-top: 20px; }");
-                out.println("th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }");
-                out.println("</style>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<div class='header'><h1>集金</h1></div>");
-
-                out.println("<div class='content'>");
-                out.println("<h2>" + nameParam + "のSTUDENT_CLASSとNUMBER</h2>");
-                out.println("<table>");
-                out.println("<thead><tr><th>STUDENT_CLASS</th><th>NUMBER</th></tr></thead>");
-                out.println("<tbody>");
-
-                for (String[] classAndNumber : classAndNumberList) {
-                    out.println("<tr>");
-                    out.println("<td>" + classAndNumber[0] + "</td>");
-                    out.println("<td>" + classAndNumber[1] + "</td>");
-                    out.println("</tr>");
-                }
-
-                out.println("</tbody>");
-                out.println("</table>");
-                out.println("</div>"); // content
-
-                out.println("</body>");
-                out.println("</html>");
-            } else {
-                // 教材名が指定されていない場合、リストを表示
-                List<String> catalogNames = catalogDAO.getAllCatalogNames();
-
-                // HTML出力
-                out.println("<!DOCTYPE html>");
-                out.println("<html lang='ja'>");
-                out.println("<head>");
-                out.println("<meta charset='UTF-8'>");
-                out.println("<title>集金</title>");
-                out.println("<style>");
-                out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
-                out.println(".header { background-color: #f4f4f4; padding: 20px; text-align: center; }");
-                out.println(".header h1 { margin: 0; font-size: 24px; }");
-                out.println(".content { padding: 20px; max-width: 800px; margin: 0 auto; }");
-                out.println(".catalog-list { list-style-type: none; padding: 0; }");
-                out.println(".catalog-list li { padding: 10px; background-color: #f9f9f9; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 4px; }");
-                out.println(".catalog-list li:hover { background-color: #f1f1f1; }");
-                out.println("</style>");
-                out.println("</head>");
-                out.println("<body>");
-                out.println("<div class='header'><h1>集金</h1></div>");
-
-                out.println("<div class='content'>");
-                out.println("<h2>教材一覧</h2>");
-                out.println("<ul class='catalog-list'>");
-
-                for (String name : catalogNames) {
-                    out.println("<li><a href='/Team-E/teacher/money?name=" + name + "'>" + name + "</a></li>");
-                }
-
-                out.println("</ul>");
-                out.println("</div>"); // content
-
-                out.println("</body>");
-                out.println("</html>");
+            // 選択された教材名を取得
+            String selectedCatalog = req.getParameter("catalog");
+            List<StudentClass> studentClasses = null;
+            if (selectedCatalog != null && !selectedCatalog.isEmpty()) {
+                Student_ClassDAO studentClassDAO = new Student_ClassDAO();
+                studentClasses = studentClassDAO.getStudentClasses();
             }
+
+            // HTML出力
+            out.println("<!DOCTYPE html>");
+            out.println("<html lang='ja'>");
+            out.println("<head>");
+            out.println("<meta charset='UTF-8'>");
+            out.println("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
+            out.println("<title>集金</title>");
+            out.println("<style>");
+            out.println(".header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #f4f4f4; border-bottom: 1px solid #ddd; }");
+            out.println(".header h1 { margin: 0; font-size: 24px; }");
+            out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
+            out.println(".user-info { display: flex; align-items: center; gap: 15px; }");
+            out.println(".nav-menu { display: flex; width: 100%; margin: 20px 0; }");
+            out.println(".nav-menu a { display: block; padding: 15px; text-decoration: none; color: #333; border: 1px solid #ddd; text-align: center; width: 100%; box-sizing: border-box; }");
+            out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
+            out.println("footer { text-align: center; background-color: #f4f4f4; border-top: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 20px; box-sizing: border-box; }");
+            out.println("footer p { margin: 0, 0, 7, 0; color: #333; font-size: 11px; }");
+            out.println("</style>");
+            out.println("</head>");
+            out.println("<body>");
+
+            // ヘッダー部分
+            out.println("<div class='header'>");
+            out.println("<h1>集金</h1>");
+            out.println("<div class='user-info'>");
+
+            // ログインユーザー名を表示
+            if (teacher != null) {
+                out.println(teacher.getName());
+            }
+
+            // ログアウトリンク
+            out.println("<a href='/Team-E/menu.jsp' class='footer'>ログアウト</a>");
+            out.println("</div>");
+            out.println("</div>");
+
+            // ナビゲーションメニュー
+            out.println("<div class='nav-menu'>");
+            out.println("<a href='/Team-E/teacher/calendar'>カレンダー</a>");
+            out.println("<a href='/Team-E/teacher/post'>連絡</a>");
+            out.println("<a href='/Team-E/teacher/money'>集金</a>");
+            out.println("<a href='/Team-E/teacher/temperature'>体温一覧</a>");
+            out.println("<a href='/Team-E/teacher/children'>児童</a>");
+            out.println("</div>");
+
+            // メインコンテンツ
+            out.println("<div class='content'>");
+            out.println("<h2>教材一覧</h2>");
+            out.println("<ul>");
+            for (String name : catalogNames) {
+                out.println("<li><a href='?catalog=" + name + "'>" + name + "</a></li>");
+            }
+            out.println("</ul>");
+
+            if (studentClasses != null && !studentClasses.isEmpty()) {
+                out.println("<h2>選択した教材のクラス情報</h2>");
+                out.println("<table border='1'>");
+                out.println("<tr><th>ID</th><th>NUMBER</th></tr>");
+                for (StudentClass sc : studentClasses) {
+                    out.println("<tr><td>" + sc.getClassId() + "</td><td>" + sc.getNumber() + "</td></tr>");
+                }
+                out.println("</table>");
+            }
+            out.println("</div>");
+
+            // フッター部分追加
+            out.println("<footer>");
+            out.println("<p>© 2025</p>");
+            out.println("<p>School Organizer</p>");
+            out.println("</footer>");
+
+            out.println("</body>");
+            out.println("</html>");
         } catch (Exception e) {
             e.printStackTrace(out);
         }

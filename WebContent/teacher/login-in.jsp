@@ -6,69 +6,85 @@
     <c:param name="content">
         <form action="login" method="post" class="login-form">
             <div class="form-group">
-                <label for="name">教員名</label>
-                <input type="text" name="name" id="name" required>
+                <label for="name">idを入力:</label>
+                <input type="text" id="name" name="id" required>
             </div>
             <div class="form-group">
-                <label for="password">パスワード</label>
+                <label for="password">パスワードを入力:</label>
                 <input type="password" name="password" id="password" required>
+            </div>
+            <div class="form-group">
+                <label for="chk_d_ps">
+                    <input type="checkbox" id="chk_d_ps" onclick="togglePasswordVisibility()">
+                    パスワードを表示
+                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="ログイン">
             </div>
-            <p>${ errorMessage }</p>
+            <p class="error-message">${ errorMessage }</p>
         </form>
     </c:param>
 </c:import>
 
 <style>
-    /* フォームの横幅を制限 */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+    }
     .login-form {
-        width: 100%; /* 親要素の幅を100%に設定 */
-        max-width: 400px; /* 最大幅を400pxに設定 */
-        margin: 0 auto; /* 中央寄せ */
+        width: 100%;
+        max-width: 400px;
+        margin: 100px auto;
         padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
     }
-
-    /* 各フォームグループ */
     .form-group {
-        margin-bottom: 20px; /* 各フォームグループの間にスペースを空ける */
+        margin-bottom: 20px;
     }
-
     .form-group label {
-        display: block; /* ラベルをブロック要素にして縦に並べる */
-        margin-bottom: 5px; /* ラベルと入力フィールドの間にスペースを空ける */
-        font-weight: bold; /* ラベルのテキストを太字に */
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
     }
-
     .form-group input[type="text"],
     .form-group input[type="password"] {
-        width: 100%; /* 入力ボックスを親要素の幅に合わせる */
-        padding: 10px; /* 入力ボックス内に余白を加える */
-        border: 1px solid #ccc; /* ボーダーを追加 */
-        border-radius: 4px; /* 角を丸くする */
-        box-sizing: border-box; /* パディングとボーダーを含めて幅を計算 */
-    }
-
-    .form-group input[type="submit"] {
-        width: 100%; /* ボタンを入力フィールドと同じ幅に */
+        width: 100%;
         padding: 10px;
-        background-color: #007BFF;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .form-group input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
         color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
         font-size: 16px;
     }
-
     .form-group input[type="submit"]:hover {
         background-color: #0056b3;
     }
-
-    /* エラーメッセージのスタイル */
     .error-message {
         color: red;
+        text-align: center;
         margin-top: 10px;
     }
 </style>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("password");
+        var checkbox = document.getElementById("chk_d_ps");
+        if (checkbox.checked) {
+            passwordField.type = "text";  // パスワードを表示
+        } else {
+            passwordField.type = "password";  // パスワードを非表示
+        }
+    }
+</script>

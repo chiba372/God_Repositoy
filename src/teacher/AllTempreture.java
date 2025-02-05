@@ -54,7 +54,8 @@ public class AllTempreture extends HttpServlet {
             out.println(".nav-menu a { display: block; padding: 15px; text-decoration: none; color: #333; border: 1px solid #ddd; margin: 0; text-align: center; width: 100%; box-sizing: border-box; }");
             out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
             out.println(".content { padding: 20px; text-align: center; max-width: 8000px; margin: 0 auto; }");
-            out.println(".footer { display: flex; justify-content: flex-start; align-items: center; padding: 20px; background-color: #f8f9fa; }");
+            out.println(".footer { display: flex; justify-content: center; align-items: center; padding: 20px; background-color: #f8f9fa; }");
+            out.println(".footer p { margin: 0; color: #333; font-size: 14px; }");
             out.println(".footer button { padding: 10px 20px; border: 1px solid #ccc; background-color: #ffffff; cursor: pointer; border-radius: 4px; }");
             out.println(".footer button:hover { background-color: #e2e6ea; }");
 
@@ -71,22 +72,20 @@ public class AllTempreture extends HttpServlet {
             out.println("<div class='header'>");
             out.println("<h1>体温一覧</h1>");
             out.println("<div class='user-info'>");
-         // ログインユーザー情報を取得
+            // ログインユーザー情報を取得
             HttpSession session1 = req.getSession();
             Teacher teacher = (Teacher) session1.getAttribute("session_teacher"); // セッションからTeacherオブジェクトを取得
 
-            // ログインしている場合、教師の名前を表示
+            // ログインユーザー名を表示
             if (teacher != null) {
-                out.println( teacher.getName());
+                out.println(teacher.getName());
             }
 
-            // ログアウトボタンと担当ページへのリンク
-            out.println("<form action='/Team-E/menu.jsp' method='post' style='display:inline;'>");
-            out.println("<input type='submit' value='ログアウト' />");
-            out.println("</form>");
-            out.println("<a href='/Team-E/teacher/yourpage.jsp' style='margin-left: 20px;'>担当ページへ</a>");
+            // ログアウトリンク
+            out.println("<a href='/Team-E/menu.jsp' class='footer'>ログアウト</a>");
             out.println("</div>");
             out.println("</div>");
+
 
             // ナビゲーションメニュー
             out.println("<div class='nav-menu'>");
@@ -159,6 +158,12 @@ public class AllTempreture extends HttpServlet {
             }
 
             out.println("</div>"); // content
+
+            // フッター部分
+            out.println("<div class='footer'>");
+            out.println("<p>© 2025</p>");
+            out.println("<p>School Organizer</p>");
+            out.println("</div>");
 
             // HTML終了タグ
             out.println("</body>");

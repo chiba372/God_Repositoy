@@ -21,11 +21,11 @@ public class LoginController extends CommonServlet {
     protected void post(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
 
-        String name = req.getParameter("name");
+        String id = req.getParameter("id");
         String password = req.getParameter("password");
 
         CustomerDAO dao = new CustomerDAO();
-        Teacher teacher = dao.search(name, password);
+        Teacher teacher = dao.search(id, password);
 
         // 認証できた場合
         if (teacher != null) {
@@ -39,7 +39,7 @@ public class LoginController extends CommonServlet {
             session.setAttribute("teacherName", teacherName);
 
             // ログイン後のページにリダイレクト
-            resp.sendRedirect("/Team-E/menu2.jsp");
+            resp.sendRedirect("menu2.jsp");
             return;
         }
 

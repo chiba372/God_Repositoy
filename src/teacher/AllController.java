@@ -37,7 +37,7 @@ public class AllController extends HttpServlet {
             out.println("<head>");
             out.println("<meta charset='UTF-8'>");
             out.println("<meta name='viewport' content='width=device-width, initial-scale=1.0'>");
-            out.println("<title>学生一覧</title>");
+            out.println("<title>教員</title>");
             out.println("<style>");
             out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
             out.println(".header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #f4f4f4; border-bottom: 1px solid #ddd; }");
@@ -49,13 +49,16 @@ public class AllController extends HttpServlet {
             out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
             out.println(".content { padding: 20px; text-align: center; max-width: 8000px; margin: 0 auto; }");
             out.println(".footer { display: flex; justify-content: flex-start; align-items: center; padding: 20px; background-color: #f8f9fa; }");
-            out.println(".footer button { padding: 10px 20px; border: 1px solid #ccc; background-color: #ffffff; cursor: pointer; border-radius: 4px; }");
-            out.println(".footer button:hover { background-color: #e2e6ea; }");
+            out.println(".footer a { padding: 10px 20px; border: 1px solid #ccc; background-color: #ffffff; cursor: pointer; border-radius: 4px; text-decoration: none; }");
+            out.println(".footer a:hover { background-color: #e2e6ea; }");
 
             // テーブルのスタイル
             out.println("table { width: 100%; border-collapse: collapse; margin-top: 20px; }");
             out.println("th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }");
             out.println("th { background-color: #f4f4f4; font-weight: bold; }");
+
+            out.println("footer { text-align: center; background-color: #f4f4f4; border-top: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 20px; box-sizing: border-box; }");
+            out.println("footer p { margin: 0, 0, 7, 0; color: #333; font-size: 11px; }");
 
             out.println("</style>");
             out.println("</head>");
@@ -68,14 +71,11 @@ public class AllController extends HttpServlet {
 
             // ログインユーザー名を表示
             if (teacher != null) {
-                out.println(teacher.getName() ); // Teacherオブジェクトから名前を表示
+                out.println(teacher.getName()); // Teacherオブジェクトから名前を表示
             }
 
-            // ログアウトボタンと担当ページへのリンク
-            out.println("<form action='/Team-E/menu.jsp' method='post' style='display:inline;'>");
-            out.println("<input type='submit' value='ログアウト' />");
-            out.println("</form>");
-            out.println("<a href='/Team-E/teacher/yourpage.jsp' style='margin-left: 20px;'>担当ページへ</a>");
+            // ログアウトリンクのリンク
+            out.println("<a href='/Team-E/menu.jsp' class='footer'>ログアウト</a>");
             out.println("</div>");
             out.println("</div>");
 
@@ -101,10 +101,11 @@ public class AllController extends HttpServlet {
             out.println("</table>");
             out.println("</div>");
 
-            // フッター部分
-            out.println("<div class='footer'>");
-            out.println("<button>戻る</button>");
-            out.println("</div>");
+            // フッター部分追加
+            out.println("<footer>");
+            out.println("<p>© 2025</p>");
+            out.println("<p>School Organizer</p>");
+            out.println("</footer>");
 
             // HTML終了タグ
             out.println("</body>");

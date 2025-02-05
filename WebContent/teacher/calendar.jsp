@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="bean.Teacher" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -118,17 +119,25 @@
     <div class="header">
         <h1>カレンダー</h1>
         <div class="user-info">
-            <span>全体アカウントでログイン中</span>
-            <a href="#">担当ページへ</a>
+            <%
+                Teacher teacher = (Teacher) session.getAttribute("session_teacher");
+                if (teacher != null) {
+                    String teacherName = teacher.getName();
+                    out.print(teacherName);
+            %>
+            <a href="/Team-E/logout.jsp">ログアウト</a>
+            <%
+                }
+            %>
         </div>
     </div>
 
     <div class="nav-menu">
         <a href="/Team-E/teacher/calendar.jsp">カレンダー</a>
-        <a href="/Team-E/teacher/conntact.jsp">連絡</a>
-        <a href="/Team-E/teacher/Money.jsp">集金</a>
-        <a href="/Team-E/teacher/temperature.jsp">体温</a>
-        <a href="/Team-E/teacher/children.jsp">児童</a>
+        <a href="/Team-E/teacher/post">連絡</a>
+        <a href="/Team-E/teacher/money">集金</a>
+        <a href="/Team-E/teacher/temperature">体温</a>
+        <a href="/Team-E/teacher/children">児童</a>
     </div>
 
     <div class="calendar-container">
@@ -210,7 +219,7 @@
             const title = document.getElementById('calendar-title');
             const tableBody = document.querySelector('#calendar-table tbody');
 
-            title.textContent = `${year}年${month}月`;
+            title.textContent = ${year}年${month}月;
 
             const firstDay = new Date(year, month - 1, 1).getDay();
             const daysInMonth = new Date(year, month, 0).getDate();

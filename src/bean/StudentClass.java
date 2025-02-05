@@ -1,15 +1,15 @@
 package bean;
 
-public class Catalog {
-    private String classNo;
+public class StudentClass {
+    private int classId;
     private int number;
 
-    public String getClassNo() {
-        return classNo;
+    public int getClassId() {
+        return classId;
     }
 
-    public void setClassNo(String classNo) {
-        this.classNo = classNo;
+    public void setClassId(int classId) {
+        this.classId = classId;
     }
 
     public int getNumber() {

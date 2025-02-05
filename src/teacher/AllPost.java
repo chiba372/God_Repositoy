@@ -60,8 +60,7 @@ public class AllPost extends HttpServlet {
             out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
             out.println(".content { padding: 20px; text-align: center; max-width: 1200px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }");
             out.println(".footer { text-align: center; padding: 20px; background-color: #f8f9fa; }");
-            out.println(".footer a { padding: 10px 20px; border: 1px solid #ccc; background-color: #ffffff; cursor: pointer; border-radius: 4px; text-decoration: none; color: #333; }");
-            out.println(".footer a:hover { background-color: #e2e6ea; }");
+            out.println(".footer p { margin: 0; color: #333; font-size: 11px; }");
             out.println("table { width: 100%; border-collapse: collapse; margin-top: 20px; }");
             out.println("th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }");
             out.println("th { background-color: #f4f4f4; font-weight: bold; }");
@@ -95,16 +94,13 @@ public class AllPost extends HttpServlet {
             HttpSession session = req.getSession();
             Teacher teacher = (Teacher) session.getAttribute("session_teacher"); // セッションからTeacherオブジェクトを取得
 
-            // ログインしている場合、教師の名前を表示
+            // ログインユーザー名を表示
             if (teacher != null) {
-                out.println( teacher.getName());
+                out.println(teacher.getName());
             }
 
-            // ログアウトボタンと担当ページへのリンク
-            out.println("<form action='/Team-E/menu.jsp' method='post' style='display:inline;'>");
-            out.println("<input type='submit' value='ログアウト' />");
-            out.println("</form>");
-            out.println("<a href='/Team-E/teacher/yourpage.jsp' style='margin-left: 20px;'>担当ページへ</a>");
+            // ログアウトリンク
+            out.println("<a href='/Team-E/menu.jsp' class='footer'>ログアウト</a>");
             out.println("</div>");
             out.println("</div>");
 
@@ -160,15 +156,17 @@ public class AllPost extends HttpServlet {
             out.println("<form action='/Team-E/teacher/post' method='post'>");
             out.println("<label for='name'>件名:</label>");
             out.println("<input type='text' id='name' name='name' required>");
-
             out.println("<label for='content'>内容:</label>");
             out.println("<textarea id='content' name='content' rows='4' required></textarea>");
-
             out.println("<input type='submit' value='投稿する'>");
             out.println("</form>");
             out.println("</div>");
 
             // フッター部分
+            out.println("<footer class='footer'>");
+            out.println("<p>© 2025</p>");
+            out.println("<p>School Organizer</p>");
+            out.println("</footer>");
 
         } catch (Exception e) {
             e.printStackTrace();
