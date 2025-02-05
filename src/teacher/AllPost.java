@@ -25,26 +25,24 @@ public class AllPost extends HttpServlet {
         PrintWriter out = resp.getWriter();
         resp.setContentType("text/html; charset=UTF-8");
 
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("session_teacher");
+
         try {
-            // DAOをインスタンス化
             AllpostDAO dao = new AllpostDAO();
 
-            // 日付、件名、内容をクエリパラメータで受け取る
-            String dateParam = req.getParameter("date");
-            String nameParam = req.getParameter("name");
-            String contentParam = req.getParameter("content");
+            String deleteName = req.getParameter("deleteName");
+            String deleteDate = req.getParameter("deleteDate");
 
-            // 削除処理
-            String deleteDateParam = req.getParameter("deleteDate");
-            String deleteNameParam = req.getParameter("deleteName");
-            if (deleteDateParam != null && deleteNameParam != null) {
-                Date deleteDate = new SimpleDateFormat("yyyy-MM-dd").parse(deleteDateParam);
-                dao.deletePostByNameAndDate(deleteNameParam, deleteDate);
+            if (deleteName != null && deleteDate != null) {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(deleteDate);
+                dao.deletePostByNameAndDate(deleteName, date);
                 resp.sendRedirect("/Team-E/teacher/post");
                 return;
             }
 
-            // ヘッダー部分
+            List<Allpost> allPosts = dao.all();
+
             out.println("<!DOCTYPE html>");
             out.println("<html lang='ja'>");
             out.println("<head>");
@@ -55,56 +53,32 @@ public class AllPost extends HttpServlet {
             out.println("body { font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }");
             out.println(".header { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background-color: #f4f4f4; border-bottom: 1px solid #ddd; }");
             out.println(".header h1 { margin: 0; font-size: 24px; }");
+            out.println(".header .user-info { display: flex; align-items: center; gap: 15px; }");
+            out.println(".header .user-info span { font-size: 16px; color: #555; }");
             out.println(".nav-menu { display: flex; width: 100%; margin: 20px 0; }");
-            out.println(".nav-menu a { display: block; padding: 15px; text-decoration: none; color: #333; border: 1px solid #ddd; margin: 0; text-align: center; width: 100%; box-sizing: border-box; }");
-            out.println(".nav-menu a:hover { background-color: #f0f0f0; }");
-            out.println(".content { padding: 20px; text-align: center; max-width: 1200px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }");
-            out.println(".footer { text-align: center; padding: 20px; background-color: #f8f9fa; }");
-            out.println(".footer p { margin: 0; color: #333; font-size: 11px; }");
+            out.println(".nav-menu a { display: block; padding: 15px; text-decoration: none; color: #333; border: 1px solid #ddd; text-align: center; width: 100%; box-sizing: border-box; }");
+            out.println(".content { padding: 20px; text-align: center; max-width: 800px; margin: 0 auto; }");
             out.println("table { width: 100%; border-collapse: collapse; margin-top: 20px; }");
             out.println("th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }");
             out.println("th { background-color: #f4f4f4; font-weight: bold; }");
-            out.println("tr:nth-child(even) { background-color: #f9f9f9; }");
-            out.println("tr:hover { background-color: #f1f1f1; }");
-
-            // 詳細表示のスタイル
-            out.println(".detail-container { background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 800px; margin: 20px auto; }");
-            out.println(".detail-container h3 { font-size: 24px; margin-bottom: 10px; color: #333; }");
-            out.println(".detail-container h4 { font-size: 20px; color: #555; margin-bottom: 15px; }");
-            out.println(".detail-container p { font-size: 18px; line-height: 1.6; color: #444; }");
-
-            // 投稿フォームのスタイル
-            out.println(".form-container { background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); max-width: 800px; margin: 20px auto; }");
-            out.println(".form-container h3 { font-size: 24px; margin-bottom: 10px; color: #333; }");
-            out.println(".form-container label { font-size: 18px; margin-bottom: 10px; color: #555; display: block; }");
-            out.println(".form-container input[type='text'], .form-container textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }");
-            out.println(".form-container input[type='submit'] { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; font-size: 18px; cursor: pointer; }");
-            out.println(".form-container input[type='submit']:hover { background-color: #45a049; }");
-
+            out.println("footer { text-align: center; background-color: #f4f4f4; border-top: 1px solid #ddd; padding: 10px; width: 100%; margin-top: 20px; box-sizing: border-box; }");
             out.println("</style>");
             out.println("</head>");
             out.println("<body>");
 
-            // ヘッダー部分の表示
             out.println("<div class='header'>");
             out.println("<h1>投稿一覧</h1>");
             out.println("<div class='user-info'>");
 
-            // ログインユーザー情報を取得
-            HttpSession session = req.getSession();
-            Teacher teacher = (Teacher) session.getAttribute("session_teacher"); // セッションからTeacherオブジェクトを取得
-
             // ログインユーザー名を表示
             if (teacher != null) {
-                out.println(teacher.getName());
+                out.println(teacher.getName()); // Teacherオブジェクトから名前を表示
             }
 
-            // ログアウトリンク
+            // ログアウトリンクのリンク
             out.println("<a href='/Team-E/menu.jsp' class='footer'>ログアウト</a>");
             out.println("</div>");
             out.println("</div>");
-
-            // ナビゲーションメニュー
             out.println("<div class='nav-menu'>");
             out.println("<a href='/Team-E/teacher/calendar.jsp'>カレンダー</a>");
             out.println("<a href='/Team-E/teacher/post'>連絡</a>");
@@ -113,64 +87,76 @@ public class AllPost extends HttpServlet {
             out.println("<a href='/Team-E/teacher/children'>児童</a>");
             out.println("</div>");
 
-            // 投稿詳細の表示
-            if (dateParam != null && nameParam != null && contentParam != null) {
-                // 詳細情報を表示
-                out.println("<div class='content detail-container'>");
-                out.println("<h3>日付: " + dateParam + "</h3>");
-                out.println("<h4>件名: " + nameParam + "</h4>");
-                out.println("<p><strong>内容:</strong><br>" + contentParam + "</p>");
-                out.println("</div>");
-            } else {
-                // 投稿一覧の表示
-                List<Allpost> allPosts = dao.all();
-
-                out.println("<div class='content'>");
-                out.println("<table>");
-                out.println("<thead>");
-                out.println("<tr><th>日付</th><th>件名</th><th>詳細</th><th>削除</th></tr>");
-                out.println("</thead>");
-                out.println("<tbody>");
-
-                for (Allpost post : allPosts) {
-                    Date postDate = post.getDate();
-                    String postName = post.getName();
-                    String postContent = post.getContent();
-
-                    out.println("<tr>");
-                    out.println("<td>" + postDate + "</td>");
-                    out.println("<td>" + postName + "</td>");
-                    out.println("<td><a href='/Team-E/teacher/post?date=" + postDate + "&name=" + postName + "&content=" + postContent + "'>詳細</a></td>");
-                    out.println("<td><a href='/Team-E/teacher/post?deleteDate=" + postDate + "&deleteName=" + postName + "'>削除</a></td>");
-                    out.println("</tr>");
-                }
-
-                out.println("</tbody>");
-                out.println("</table>");
-                out.println("</div>");
+            out.println("<div class='content'>");
+            out.println("<table>");
+            out.println("<tr><th>日付</th><th>件名</th><th>詳細</th><th>削除</th></tr>");
+            for (Allpost post : allPosts) {
+                String postDate = new SimpleDateFormat("yyyy-MM-dd").format(post.getDate());
+                out.println("<tr>");
+                out.println("<td>" + postDate + "</td>");
+                out.println("<td>" + post.getName() + "</td>");
+                out.println("<td><a href='/Team-E/teacher/post?detailDate=" + postDate + "&detailName=" + post.getName() + "'>詳細</a></td>");
+                out.println("<td><a href='/Team-E/teacher/post?deleteDate=" + postDate + "&deleteName=" + post.getName() + "' onclick=\"return confirm('削除しますか？');\">削除</a></td>");
+                out.println("</tr>");
             }
+            out.println("</table>");
 
-            // 投稿フォームの表示
-            out.println("<div class='form-container'>");
+            // 投稿フォーム
             out.println("<h3>新規投稿</h3>");
             out.println("<form action='/Team-E/teacher/post' method='post'>");
-            out.println("<label for='name'>件名:</label>");
-            out.println("<input type='text' id='name' name='name' required>");
-            out.println("<label for='content'>内容:</label>");
-            out.println("<textarea id='content' name='content' rows='4' required></textarea>");
+            out.println("件名: <input type='text' name='name' required><br>");
+            out.println("内容: <textarea name='content' required></textarea><br>");
             out.println("<input type='submit' value='投稿する'>");
             out.println("</form>");
+
+            // 投稿詳細表示
+            String detailName = req.getParameter("detailName");
+            String detailDate = req.getParameter("detailDate");
+
+            if (detailName != null && detailDate != null) {
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse(detailDate);
+                Allpost postDetail = dao.getPostByNameAndDate(detailName, date);
+
+                if (postDetail != null) {
+                    out.println("<h2>投稿詳細</h2>");
+                    out.println("<p><strong>日付:</strong> " + detailDate + "</p>");
+                    out.println("<p><strong>件名:</strong> " + postDetail.getName() + "</p>");
+                    out.println("<p><strong>内容:</strong> " + postDetail.getContent() + "</p>");
+                    out.println("<p><a href='/Team-E/teacher/post?deleteDate=" + detailDate + "&deleteName=" + detailName + "' onclick=\"return confirm('この投稿を削除しますか？');\">この投稿を削除</a></p>");
+                } else {
+                    out.println("<p>該当する投稿が見つかりませんでした。</p>");
+                }
+            }
+
             out.println("</div>");
+            out.println("<footer><p>© 2025 School Organizer</p></footer>");
+            out.println("</body>");
+            out.println("</html>");
+        } catch (Exception e) {
+            e.printStackTrace(out);
+        }
+    }
 
-            // フッター部分
-            out.println("<footer class='footer'>");
-            out.println("<p>© 2025</p>");
-            out.println("<p>School Organizer</p>");
-            out.println("</footer>");
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
 
+        try {
+            String name = req.getParameter("name");
+            String content = req.getParameter("content");
+            Date date = new Date();
+
+            Allpost post = new Allpost();
+            post.setDate(date);
+            post.setName(name);
+            post.setContent(content);
+
+            AllpostDAO dao = new AllpostDAO();
+            dao.insertPost(post);
+
+            resp.sendRedirect("/Team-E/teacher/post");
         } catch (Exception e) {
             e.printStackTrace();
-            out.println("<h2>エラーが発生しました</h2>");
         }
     }
 }

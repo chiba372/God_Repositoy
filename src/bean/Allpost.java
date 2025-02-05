@@ -3,11 +3,9 @@ package bean;
 import java.util.Date;
 
 public class Allpost {
-
     private Date date; // 日付
     private String name; // 件名
     private String content; // 内容
-
 
     // Getter と Setter
     public String getName() {

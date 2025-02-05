@@ -18,9 +18,9 @@ public class AllpostDAO extends DAO {
      * 全ての投稿を取得する
      */
     public List<Allpost> all() throws Exception {
-        List<Allpost> list = new ArrayList<Allpost>();
+        List<Allpost> list = new ArrayList<>();
         Connection con = getConnection();
-        PreparedStatement st = con.prepareStatement("SELECT * FROM POST");
+        PreparedStatement st = con.prepareStatement("SELECT * FROM POST ORDER BY DATE DESC");
         ResultSet rs = st.executeQuery();
 
         while (rs.next()) {
@@ -31,6 +31,26 @@ public class AllpostDAO extends DAO {
             list.add(p);
         }
         return list;
+    }
+
+    /**
+     * 指定された件名と日付の投稿を取得する
+     */
+    public Allpost getPostByNameAndDate(String name, Date date) throws Exception {
+        Connection con = getConnection();
+        PreparedStatement st = con.prepareStatement("SELECT * FROM POST WHERE NAME = ? AND DATE = ?");
+        st.setString(1, name);
+        st.setDate(2, new java.sql.Date(date.getTime()));
+        ResultSet rs = st.executeQuery();
+
+        if (rs.next()) {
+            Allpost p = new Allpost();
+            p.setDate(rs.getDate("DATE"));
+            p.setName(rs.getString("NAME"));
+            p.setContent(rs.getString("CONTENT"));
+            return p;
+        }
+        return null;
     }
 
     /**
@@ -46,7 +66,7 @@ public class AllpostDAO extends DAO {
     }
 
     /**
-     * 特定の件名と日付を持つ投稿を削除する
+     * 指定された件名と日付の投稿を削除する
      */
     public void deletePostByNameAndDate(String name, Date date) throws Exception {
         Connection con = getConnection();
