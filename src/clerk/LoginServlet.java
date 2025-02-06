@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
             } else {
                 // 認証に失敗した場合
                 // エラーメッセージをリクエストに設定し、ログインページにフォワード
-                request.setAttribute("errorMessage", "認証エラー: ログインIDまたはパスワードが間違っています。");
+                request.setAttribute("errorMessage", "認証エラー: IDまたはパスワードが間違っています。");
                 request.getRequestDispatcher("./login.jsp").forward(request, response);
             }
         } catch (Exception e) {

@@ -64,32 +64,45 @@ public class PurchaseDAO extends DAO {
 //	}
 
 	// 事務員ページに表示する商品購入リストのメソッド
-	public List<PurchaseInfo> getPurchaseList() {
-		List<PurchaseInfo> list = new ArrayList<>();
-		String sql = "SELECT p.ID AS PRODUCT_ID, p.NAME AS PRODUCT_NAME, s.ID AS STUDENT_ID, s.NAME AS STUDENT_NAME, pu.PRO_QUA, (pu.PRO_QUA * p.PRICE) AS TOTAL " +
+	public List<PurchaseInfo> getPurchaseList(Integer gradeFilter) {
+		List<PurchaseInfo> purchaseList = new ArrayList<>();
+		String sql = "SELECT p.ID AS PRODUCT_ID, p.NAME AS PRODUCT_NAME, s.ID AS STUDENT_ID, s.NAME AS STUDENT_NAME, sc.GRADE, pu.PRO_QUA, (pu.PRO_QUA * p.PRICE) AS TOTAL " +
 					   "FROM PURCHASE pu " +
 					   "JOIN PRODUCT p ON pu.PRODUCT_ID = p.ID " +
 					   "JOIN STUDENT s ON pu.STUDENT_ID = s.ID " +
-					   "ORDER BY s.ID ASC, p.NAME ASC"; // 児童番号 → カタログ名 の順番で昇順でソート
+					   "JOIN STUDENT_CLASS sc ON s.ID = sc.ID ";
+
+
+		if (gradeFilter != null) {
+			sql += "WHERE sc.GRADE = ?";
+		}
+
+		sql += " ORDER BY s.ID ASC";
 
 		try (Connection con = DbUtil.getConnection();
-			  PreparedStatement pstmt = con.prepareStatement(sql);
-			  ResultSet rs = pstmt.executeQuery()) {
+			  PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-			while (rs.next()) {
-				int productId = rs.getInt("PRODUCT_ID");
-				String productName = rs.getString("PRODUCT_NAME");
-				int studentId = rs.getInt("STUDENT_ID");
-				String studentName = rs.getString("STUDENT_NAME");
-				int proQua = rs.getInt("PRO_QUA");
-				int total = rs.getInt("TOTAL");
+			if (gradeFilter != null) {
+				pstmt.setInt(1, gradeFilter);
+			}
 
-				list.add(new PurchaseInfo(productId, productName, studentId, studentName, proQua, total));
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+					int productId = rs.getInt("PRODUCT_ID");
+					String productName = rs.getString("PRODUCT_NAME");
+					int studentId = rs.getInt("STUDENT_ID");
+					String studentName = rs.getString("STUDENT_NAME");
+					int grade = rs.getInt("GRADE");
+					int proQua = rs.getInt("PRO_QUA");
+					int total = rs.getInt("TOTAL");
+
+					purchaseList.add(new PurchaseInfo(productId, productName, studentId, studentName, grade, proQua, total));
+				}
 			}
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
-		return list;
+		return purchaseList;
 	}
 
 }
