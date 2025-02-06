@@ -7,14 +7,16 @@ public class PurchaseInfo implements Serializable{
 	private String productName;
 	private int studentId;
 	private String studentName;
+	private int grade;
 	private int proQua;
 	private int total;
 
-	public PurchaseInfo(int productId, String productName, int studentId, String studentName, int proQua, int total) {
+	public PurchaseInfo(int productId, String productName, int studentId, String studentName, int grade, int proQua, int total) {
 		this.productId = productId;
 		this.productName = productName;
 		this.studentId = studentId;
 		this.studentName = studentName;
+		this.grade = grade;
 		this.proQua = proQua;
 		this.total = total;
 	}
@@ -42,6 +44,12 @@ public class PurchaseInfo implements Serializable{
 	}
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
+	}
+	public int getGrade() {
+		return grade;
+	}
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 	public int getProQua() {
 		return proQua;

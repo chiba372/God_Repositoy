@@ -87,7 +87,7 @@ body {
         <input type="submit" name="login" value="ログイン">
 </form>
 
-    <ul id="errorMessages">
+<ul id="errorMessages">
 <%
         String errorMessage = (String) request.getAttribute("errorMessage");
         if (errorMessage != null) {

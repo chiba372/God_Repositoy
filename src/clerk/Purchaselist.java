@@ -24,8 +24,16 @@ public class Purchaselist extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<PurchaseInfo> purchaseList = purchaseDAO.getPurchaseList();
+		// 学年のパラメータを取得
+		String gradeParam = req.getParameter("grade");
+		Integer gradeFilter = (gradeParam != null && !gradeParam.isEmpty()) ? Integer.parseInt(gradeParam) : null;
+
+		// 購入リストを取得
+		List<PurchaseInfo> purchaseList = purchaseDAO.getPurchaseList(gradeFilter);
+
+		// JSPへデータを渡す
 		req.setAttribute("purchaseList", purchaseList);
+		req.setAttribute("selectedGrade", gradeFilter);
 
 		RequestDispatcher dispatcher = req.getRequestDispatcher("purchaseList.jsp");
 		dispatcher.forward(req, resp);

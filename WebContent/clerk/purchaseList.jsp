@@ -7,6 +7,7 @@
 	<%@ include file="./../menu3.jsp" %>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>購入リスト</title>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -26,10 +27,16 @@
 			margin-left: 60px;
         }
 
+        .serch {
+        	margin-top: 20px;
+        	margin-bottom: 10px;
+        	margin-left: 20px;
+        }
+
 		table {
 			width: 100%;
 			border-collapse: collapse;
-			margin-bottom: 100px;
+			margin-bottom: 108px;
 		}
 
 		table th, table td {
@@ -46,20 +53,29 @@
 			font-weight: bold;
 		}
 
-		.button-container button {
-			padding: 10px 20px;
-			font-size: 16px;
-			border: 2px solid #333;
-			border-radius: 5px;
-			background-color: white;
+		/* プルダウンリストの設定 */
+		select {
+			width: 100px;
+			height: 25px;
 			cursor: pointer;
-			margin-left: 965px;
-			margin-top: 10px;
-			margin-bottom: 20px;
 		}
 
-		.button-container button:hover {
-			background-color: #f0f0f0;
+		/* ボタンのスタイル設定 */
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			border: none;
+			border-radius: 5px;
+			background-color: #0059ff;
+			color: white;
+			cursor: pointer;
+			margin-left: 20px;
+			margin-top: 20px;
+			margin-bottom: 10px;
+		}
+
+		button:hover {
+			background-color: #0020c2;
 		}
 
 	</style>
@@ -69,11 +85,27 @@
 	<div class="title">
 		<h1>購入リスト</h1>
 	</div>
+	<div class="serch">
+		<form action="purchaseList" method="get">
+			<!-- 学年選択 -->
+			<label for="grade">学年を選択　</label>
+			<select id="grade" name="grade">
+				<option value="">全学年</option>
+				<option value="1" ${ selectedGrade == 1 ? "selected" : "" }>１年生</option>
+				<option value="2" ${ selectedGrade == 2 ? "selected" : "" }>２年生</option>
+				<option value="3" ${ selectedGrade == 3 ? "selected" : "" }>３年生</option>
+				<option value="4" ${ selectedGrade == 4 ? "selected" : "" }>４年生</option>
+				<option value="5" ${ selectedGrade == 5 ? "selected" : "" }>５年生</option>
+				<option value="6" ${ selectedGrade == 6 ? "selected" : "" }>６年生</option>
+			</select>
+			<button type="submit">検索</button>
+	</div>
 	<!-- 購入リスト -->
 		<table>
 			<tr>
 				<th>児童番号</th>
 				<th>名前</th>
+				<th>学年</th>
 				<th>カタログ名</th>
 				<th>商品番号</th>
 				<th>個数</th>
@@ -87,6 +119,7 @@
 			<tr>
 				<td><%= purchase.getStudentId() %></td>
 				<td><%= purchase.getStudentName() %></td>
+				<td><%= purchase.getGrade() %>年生</td>
 				<td><%= purchase.getProductName() %></td>
 				<td><%= purchase.getProductId() %></td>
 				<td><%= purchase.getProQua() %></td>
@@ -97,7 +130,7 @@
 				} else {
 			%>
 			<tr>
-				<td colspan="6">データがありません</td>
+				<td colspan="7">データがありません</td>
 			</tr>
 			<% } %>
 		</table>

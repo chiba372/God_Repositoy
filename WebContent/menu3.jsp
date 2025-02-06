@@ -57,7 +57,7 @@
         	} else {
 	    %>
 	    	<p class="status">現在ログインしていません。</p>
-	    	<a href="./../login">ログイン画面へ</a>
+	    	<a href="./login">ログイン画面へ</a>
 	    <%
         	}
 	    %>
