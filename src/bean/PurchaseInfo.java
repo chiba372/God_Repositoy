@@ -36,7 +36,7 @@ public class PurchaseInfo implements Serializable{
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public String getStudentId() {
+	public String getStudentId(){
 		return studentId;
 	}
 	public void setStudentId(String studentId) {
