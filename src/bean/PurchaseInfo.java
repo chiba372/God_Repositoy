@@ -5,14 +5,15 @@ import java.io.Serializable;
 public class PurchaseInfo implements Serializable{
 	private int productId;
 	private String productName;
-	private int studentId;
+	private String studentId;
 	private String studentName;
 	private int grade;
 	private int classNo;
 	private int proQua;
 	private int total;
 
-	public PurchaseInfo(int productId, String productName, int studentId, String studentName, int grade, int classNo, int proQua, int total) {
+
+	public PurchaseInfo(int productId, String productName, String studentId, String studentName, int grade, int classNo, int proQua, int total) {
 		this.productId = productId;
 		this.productName = productName;
 		this.studentId = studentId;
@@ -35,10 +36,10 @@ public class PurchaseInfo implements Serializable{
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public int getStudentId() {
+	public String getStudentId() {
 		return studentId;
 	}
-	public void setStudentId(int studentId) {
+	public void setStudentId(String studentId) {
 		this.studentId = studentId;
 	}
 	public String getStudentName() {

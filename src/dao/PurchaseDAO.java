@@ -98,12 +98,13 @@ public class PurchaseDAO extends DAO {
 				while (rs.next()) {
 					int productId = rs.getInt("PRODUCT_ID");
 					String productName = rs.getString("PRODUCT_NAME");
-					int studentId = rs.getInt("STUDENT_ID");
+					String studentId = rs.getString("STUDENT_ID");
 					String studentName = rs.getString("STUDENT_NAME");
 					int grade = rs.getInt("GRADE");
 					int classNo = rs.getInt("CLASS_NO");
 					int proQua = rs.getInt("PRO_QUA");
 					int total = rs.getInt("TOTAL");
+
 
 					purchaseList.add(new PurchaseInfo(productId, productName, studentId, studentName, grade, classNo, proQua, total));
 				}
