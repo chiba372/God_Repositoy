@@ -39,7 +39,7 @@ public class Student_ClassDAO2 extends DAO {
 
         Connection con = getConnection();
         PreparedStatement st = con.prepareStatement(
-        		"SELECT MAX(CLASS_NO)AS CLASS_NO  FROM STUDENT_CLASS");
+        		"SELECT MAX(CLASS_NO)AS CLASS_NO  FROM STUDENT_CLASS WHERE GRADE = ?");
 		st.setInt(1, grade);
 
         ResultSet rs = st.executeQuery();
