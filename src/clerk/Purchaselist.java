@@ -36,6 +36,9 @@ public class Purchaselist extends HttpServlet {
 		// 購入リストを取得
 		List<PurchaseInfo> purchaseList = purchaseDAO.getPurchaseList(gradeFilter, classNoFilter);
 
+		// 件数を取得
+		int purchaseCount = purchaseList.size();
+
 		// 学年に対するクラスを取得
 		List<Integer> classNumbers = new ArrayList<>();
 		if (gradeFilter != null) {
@@ -48,6 +51,7 @@ public class Purchaselist extends HttpServlet {
 		req.setAttribute("selectedGrade", gradeFilter);
 		req.setAttribute("selectedClassNo", classNoFilter);
 		req.setAttribute("classNumbers", classNumbers);
+		req.setAttribute("purchaseCount", purchaseCount);
 
 		RequestDispatcher dispatcher = req.getRequestDispatcher("purchaseList.jsp");
 		dispatcher.forward(req, resp);

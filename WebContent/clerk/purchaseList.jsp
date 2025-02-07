@@ -45,10 +45,21 @@
         	margin-left: 20px;
         }
 
+        .count-container {
+        	display: flex;
+        	justify-content: space-between;
+        	align-items: center;
+        }
+
+        .result-count {
+        	font-weight: bold;
+        	margin-right: 10px;
+    	}
+
 		table {
 			width: 100%;
 			border-collapse: collapse;
-			margin-bottom: 108px;
+			margin-bottom: 80px;
 		}
 
 		table th, table td {
@@ -126,6 +137,10 @@
 			</select>
 
 			<button type="submit">検索</button>
+	</div>
+	<div class="count-container">
+		<div></div>
+		<p class="result-count">検索結果 : ${purchaseCount}件</p>
 	</div>
 	<!-- 購入リスト -->
 		<table>
