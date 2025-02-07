@@ -98,7 +98,7 @@ public class PurchaseDAO extends DAO {
 				while (rs.next()) {
 					int productId = rs.getInt("PRODUCT_ID");
 					String productName = rs.getString("PRODUCT_NAME");
-					int studentId = rs.getInt("STUDENT_ID");
+					String studentId = rs.getString("STUDENT_ID");
 					String studentName = rs.getString("STUDENT_NAME");
 					int grade = rs.getInt("GRADE");
 					int classNo = rs.getInt("CLASS_NO");
