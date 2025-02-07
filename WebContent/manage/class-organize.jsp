@@ -95,7 +95,7 @@
 				<c:forEach begin="1" end="${number}" varStatus="i">
 				<td><input type="radio" name="class_no[${status.index}]" value="${i.count}" style="transform: scale(2.5);"></td>
 				</c:forEach>
-				<td><input type="radio" name="class_no[${status.index}]" value="0" style="transform: scale(2.5);"></td>
+				<td><input type="radio" name="class_no[${status.index}]" value="0" style="transform: scale(2.5);" checked></td>
 			</tr>
 			</c:forEach>
 		</table>

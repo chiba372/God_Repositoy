@@ -11,7 +11,7 @@
 	<p>クラス数を選択してください</p>
 	<form action="class-change" method="post">
 		<input type="hidden" name="grade" value="${grade}">
-		<input type="number" name="number" required="required" style="transform: scale(2.5);">
+		<input type="number" name="number" required="required" min="1" max="99" style="transform: scale(2.5);">
 
 		<%--
 		<select name="number" style="transform: scale(2.5);">
