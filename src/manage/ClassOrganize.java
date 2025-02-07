@@ -18,7 +18,7 @@ import dao.StudentJoinClassDAO;
 import dao.Student_ClassDAO2;
 import dao.TeacherDAO;
 
-@WebServlet(urlPatterns = { "/class-organize" })
+@WebServlet(urlPatterns = { "/manage/class-organize" })
 public class ClassOrganize extends HttpServlet {
 
 
@@ -42,7 +42,7 @@ public class ClassOrganize extends HttpServlet {
 			req.setAttribute("slist", slist);
 			req.setAttribute("tlist", tlist);
 
-			req.getRequestDispatcher("manage/class-organize.jsp").forward(req, resp);
+			req.getRequestDispatcher("class-organize.jsp").forward(req, resp);
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace(out);

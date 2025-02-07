@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import bean.Event;
 import dao.EventDAO;
 
-@WebServlet(urlPatterns = { "/calendar-edit" })
+@WebServlet(urlPatterns = { "/manage/calendar-edit" })
 public class CalendarEdit extends HttpServlet {
 
 
@@ -37,7 +37,7 @@ public class CalendarEdit extends HttpServlet {
 			req.setAttribute("day", day);
 
 
-			req.getRequestDispatcher("manage/calendar-edit.jsp").forward(req, resp);
+			req.getRequestDispatcher("calendar-edit.jsp").forward(req, resp);
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace(out);

@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(urlPatterns = { "/index" })
-public class Index extends HttpServlet {
+@WebServlet(urlPatterns = { "/manage/manage-menu" })
+public class ManageMenu extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher("manage/index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/manage-menu.jsp").forward(req, resp);
 	}
 }

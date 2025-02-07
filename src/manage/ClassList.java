@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import bean.Teacher2;
 import dao.TeacherDAO;
 
-@WebServlet(urlPatterns = { "/class-list" })
+@WebServlet(urlPatterns = { "/manage/class-list" })
 	public class ClassList extends HttpServlet {
 
 
@@ -27,7 +27,7 @@ import dao.TeacherDAO;
 
 			req.setAttribute("list", list);
 
-			req.getRequestDispatcher("/manage/class-list.jsp").forward(req, resp);
+			req.getRequestDispatcher("class-list.jsp").forward(req, resp);
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace(out);

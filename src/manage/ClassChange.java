@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.Student_ClassDAO2;;
 
-@WebServlet(urlPatterns = { "/class-change" })
+@WebServlet(urlPatterns = { "/manage/class-change" })
 public class ClassChange extends HttpServlet {
 
 	@Override
@@ -27,7 +27,7 @@ public class ClassChange extends HttpServlet {
 			req.setAttribute("number", number);
 			req.setAttribute("grade", grade);
 
-			req.getRequestDispatcher("manage/class-change.jsp").forward(req, resp);
+			req.getRequestDispatcher("class-change.jsp").forward(req, resp);
 
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
