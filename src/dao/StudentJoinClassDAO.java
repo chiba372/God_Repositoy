@@ -18,7 +18,7 @@ public class StudentJoinClassDAO extends DAO {
 		PreparedStatement st = con.prepareStatement(
 				"select s.id, s.name, class_no"
 				+ " from student s join student_class c on s.id = c.id"
-				+ " where  = ?");
+				+ " where  grade = ?");
 		st.setInt(1, grade);
 
 		ResultSet rs = st.executeQuery();

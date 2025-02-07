@@ -39,9 +39,9 @@
 
 			<c:forEach var="p" items="${list}" varStatus="status">
 			<tr>
-				<td><input type="text" name="id" value="${p.id}"></td>
-				<td><input type="text" name="name" value="${p.name}"></td>
-				<td><input type="text" name="content" value="${p.content}"></td>
+				<td><input type="text" name="id" value="${p.id}" required="required"></td>
+				<td><input type="text" name="name" value="${p.name}" required="required"></td>
+				<td><input type="text" name="content" value="${p.content}" required="required"></td>
 			</tr>
 			</c:forEach>
 		</table>
@@ -58,9 +58,9 @@ function add(){
 	//追加する要素を作成
 	var tr = document.createElement('tr');
 	tr.innerHTML = `
-		<td><input type="text" name="id"></td>
-		<td><input type="text" name="name"></td>
-		<td><input type="text" name="content"></td>
+		<td><input type="text" name="id" required="required"></td>
+		<td><input type="text" name="name" required="required"></td>
+		<td><input type="text" name="content" required="required"></td>
 	`;
 
 	//末尾に追加
