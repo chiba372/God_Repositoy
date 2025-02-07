@@ -50,16 +50,14 @@
 	}
 </style>
 
-<div style="display:flex; justify-content:space-between;">
-	<h1>${grade}年生の先生</h1>
-</div>
+	<h1>${grade}年生の編成</h1>
 
 <form action="class-organize" method="post">
-	<div style="display:flex; justify-content:space-around;">
 		<h2>担任の設定</h2>
-		<input type="hidden" name="number" value="${number}">
+		<div style="; display:flex; flex-wrap: wrap; justify-content:space-around;">
 
 		<c:forEach begin="1" end="${number}" varStatus="i">
+
 		<div>
 			<label>${i.count}組</label>
 
@@ -68,11 +66,10 @@
 				<option value="${p.id}">${p.name}</option>
 				</c:forEach>
 			</select>
-
 		</div>
-		</c:forEach>
 
-	</div>
+		</c:forEach>
+		</div>
 
 	<div>
 		<h2>児童の設定</h2>
