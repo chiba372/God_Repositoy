@@ -93,7 +93,9 @@
 	</div>
 
 	<div class="nav-menu">
-		<c:import url="menu.jsp"/>
+		<a href="/Team-E/manage/calendar">カレンダー</a>
+		<a href="/Team-E/manage/class-list">クラス</a>
+		<a href="/Team-E/manage/teacher-manage">先生</a>
 	</div>
 
 	<div class="content">

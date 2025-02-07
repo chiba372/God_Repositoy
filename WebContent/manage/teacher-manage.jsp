@@ -1,6 +1,6 @@
 <%@page contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:import url="index.jsp">
+<c:import url="/manage-menu.jsp">
 
 <c:param name="title">教員管理</c:param>
 
@@ -34,9 +34,9 @@ table {
 
 		<c:forEach var="p" items="${list}" varStatus="status">
 		<tr>
-			<td><input type="text" name="name" value="${p.name}"></td>
-			<td><input type="text" name="id" value="${p.id}"></td>
-			<td><input type="text" name="password" value="${p.password}"></td>
+			<td><input type="text" name="name" value="${p.name}" required="required"></td>
+			<td><input type="text" name="id" value="${p.id}" required="required"></td>
+			<td><input type="text" name="password" value="${p.password}" required="required"></td>
 			<td><input type="checkbox" name="manager[${status.index}]" value=True
 				<c:if test="${p.is_master}">checked</c:if> style="transform: scale(2.5);"></td>
 		</tr>
@@ -55,9 +55,9 @@ function add(){
 	//追加する要素を作成
 	var tr = document.createElement('tr');
 	tr.innerHTML = `
-		<td><input type="text" name="name"></td>
-		<td><input type="text" name="id"></td>
-		<td><input type="text" name="password"></td>
+		<td><input type="text" name="name" required="required"></td>
+		<td><input type="text" name="id" required="required"></td>
+		<td><input type="text" name="password" required="required"></td>
 		<td><input type="checkbox" name="manager" value=True style="transform: scale(2.5);"></td>
 	`;
 

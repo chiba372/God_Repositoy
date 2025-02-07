@@ -18,7 +18,7 @@ import dao.StudentJoinClassDAO;
 import dao.Student_ClassDAO2;
 import dao.TeacherDAO;
 
-@WebServlet(urlPatterns = { "/class-organize" })
+@WebServlet(urlPatterns = { "/manage/class-organize" })
 public class ClassOrganize extends HttpServlet {
 
 
@@ -30,19 +30,19 @@ public class ClassOrganize extends HttpServlet {
 			StudentJoinClassDAO sdao = new StudentJoinClassDAO();
 			TeacherDAO tdao = new TeacherDAO();
 
-			List<StudentJoinClass> slist=sdao.all();
-			List<Teacher2> tlist=tdao.all();
-
-
 			int grade = Integer.parseInt(req.getParameter("grade"));
 			int number = Integer.parseInt(req.getParameter("number"));
+
+			List<StudentJoinClass> slist=sdao.gradeAll(grade);
+			List<Teacher2> tlist=tdao.all();
+
 
 			req.setAttribute("grade", grade);
 			req.setAttribute("number", number);
 			req.setAttribute("slist", slist);
 			req.setAttribute("tlist", tlist);
 
-			req.getRequestDispatcher("manage/class-organize.jsp").forward(req, resp);
+			req.getRequestDispatcher("class-organize.jsp").forward(req, resp);
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace(out);

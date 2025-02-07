@@ -1,6 +1,6 @@
 <%@page contentType="text/html; charset=UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:import url="index.jsp">
+<c:import url="/manage-menu.jsp">
 
 <c:param name="title">クラス</c:param>
 
@@ -50,16 +50,14 @@
 	}
 </style>
 
-<div style="display:flex; justify-content:space-between;">
-	<h1>${grade}年生の先生</h1>
-</div>
+	<h1>${grade}年生の編成</h1>
 
 <form action="class-organize" method="post">
-	<div style="display:flex; justify-content:space-around;">
 		<h2>担任の設定</h2>
-		<input type="hidden" name="number" value="${number}">
+		<div style="; display:flex; flex-wrap: wrap; justify-content:space-around;">
 
 		<c:forEach begin="1" end="${number}" varStatus="i">
+
 		<div>
 			<label>${i.count}組</label>
 
@@ -68,11 +66,10 @@
 				<option value="${p.id}">${p.name}</option>
 				</c:forEach>
 			</select>
-
 		</div>
-		</c:forEach>
 
-	</div>
+		</c:forEach>
+		</div>
 
 	<div>
 		<h2>児童の設定</h2>
@@ -95,7 +92,7 @@
 				<c:forEach begin="1" end="${number}" varStatus="i">
 				<td><input type="radio" name="class_no[${status.index}]" value="${i.count}" style="transform: scale(2.5);"></td>
 				</c:forEach>
-				<td><input type="radio" name="class_no[${status.index}]" value="0" style="transform: scale(2.5);"></td>
+				<td><input type="radio" name="class_no[${status.index}]" value="0" style="transform: scale(2.5);" checked></td>
 			</tr>
 			</c:forEach>
 		</table>

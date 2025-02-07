@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import bean.Teacher2;
 import dao.TeacherDAO;;
 
-@WebServlet(urlPatterns = { "/teacher-manage" })
+@WebServlet(urlPatterns = { "/manage/teacher-manage" })
 public class TeacherManage extends HttpServlet {
 
 
@@ -28,7 +28,7 @@ public class TeacherManage extends HttpServlet {
 
 			req.setAttribute("list", list);
 
-			req.getRequestDispatcher("/manage/teacher-manage.jsp").forward(req, resp);
+			req.getRequestDispatcher("teacher-manage.jsp").forward(req, resp);
 
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
