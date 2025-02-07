@@ -18,11 +18,13 @@ public class ClassChange extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter out = resp.getWriter();
 		try {
-			// DAOをインスタンス化
-			Student_ClassDAO2 dao = new Student_ClassDAO2();
-			int number=dao.maxClassNo();
 
 			int grade = Integer.parseInt(req.getParameter("grade"));
+
+			// DAOをインスタンス化
+			Student_ClassDAO2 dao = new Student_ClassDAO2();
+			int number=dao.maxClassNo(grade);
+
 
 			req.setAttribute("number", number);
 			req.setAttribute("grade", grade);

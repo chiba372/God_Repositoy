@@ -34,12 +34,14 @@ public class Student_ClassDAO2 extends DAO {
         return list;
     }
     // クラスの数を取得
-    public int maxClassNo() throws Exception {
+    public int maxClassNo(int grade) throws Exception {
     	int classNo = 0;
 
         Connection con = getConnection();
         PreparedStatement st = con.prepareStatement(
-        		"SELECT MAX(CLASS_NO)AS CLASS_NO  FROM STUDENT_CLASS");
+        		"SELECT MAX(CLASS_NO)AS CLASS_NO  FROM STUDENT_CLASS WHETE GRADE = ?");
+		st.setInt(1, grade);
+
         ResultSet rs = st.executeQuery();
 
 		if (rs.next()) {
