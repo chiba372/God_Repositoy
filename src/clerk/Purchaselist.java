@@ -1,6 +1,7 @@
 package clerk;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -28,12 +29,25 @@ public class Purchaselist extends HttpServlet {
 		String gradeParam = req.getParameter("grade");
 		Integer gradeFilter = (gradeParam != null && !gradeParam.isEmpty()) ? Integer.parseInt(gradeParam) : null;
 
+		// クラスのパラメータを取得
+		String classNoParam = req.getParameter("classNo");
+		Integer classNoFilter = (classNoParam != null && !classNoParam.isEmpty()) ? Integer.parseInt(classNoParam) : null;
+
 		// 購入リストを取得
-		List<PurchaseInfo> purchaseList = purchaseDAO.getPurchaseList(gradeFilter);
+		List<PurchaseInfo> purchaseList = purchaseDAO.getPurchaseList(gradeFilter, classNoFilter);
+
+		// 学年に対するクラスを取得
+		List<Integer> classNumbers = new ArrayList<>();
+		if (gradeFilter != null) {
+			PurchaseDAO purchaseDAO = new PurchaseDAO();
+			classNumbers = purchaseDAO.getClassNumbersByGrade(gradeFilter);
+		}
 
 		// JSPへデータを渡す
 		req.setAttribute("purchaseList", purchaseList);
 		req.setAttribute("selectedGrade", gradeFilter);
+		req.setAttribute("selectedClassNo", classNoFilter);
+		req.setAttribute("classNumbers", classNumbers);
 
 		RequestDispatcher dispatcher = req.getRequestDispatcher("purchaseList.jsp");
 		dispatcher.forward(req, resp);
