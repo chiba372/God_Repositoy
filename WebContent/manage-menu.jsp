@@ -89,7 +89,7 @@
 
     <div class="header">
         <h1>管理メニュー</h1>
-                <a href="/Team-E/teacher/post" class="login-btn">教員メニューへ</a>
+                <a href="/Team-E/teacher/menu2.jsp" class="login-btn">教員メニューへ</a>
 	</div>
 
 	<div class="nav-menu">
