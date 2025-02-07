@@ -105,6 +105,7 @@ public class PurchaseDAO extends DAO {
 					int proQua = rs.getInt("PRO_QUA");
 					int total = rs.getInt("TOTAL");
 
+
 					purchaseList.add(new PurchaseInfo(productId, productName, studentId, studentName, grade, classNo, proQua, total));
 				}
 			}

@@ -12,6 +12,7 @@ public class PurchaseInfo implements Serializable{
 	private int proQua;
 	private int total;
 
+
 	public PurchaseInfo(int productId, String productName, String studentId, String studentName, int grade, int classNo, int proQua, int total) {
 		this.productId = productId;
 		this.productName = productName;
