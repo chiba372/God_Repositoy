@@ -30,12 +30,12 @@ public class ClassOrganize extends HttpServlet {
 			StudentJoinClassDAO sdao = new StudentJoinClassDAO();
 			TeacherDAO tdao = new TeacherDAO();
 
-			List<StudentJoinClass> slist=sdao.all();
-			List<Teacher2> tlist=tdao.all();
-
-
 			int grade = Integer.parseInt(req.getParameter("grade"));
 			int number = Integer.parseInt(req.getParameter("number"));
+
+			List<StudentJoinClass> slist=sdao.gradeAll(grade);
+			List<Teacher2> tlist=tdao.all();
+
 
 			req.setAttribute("grade", grade);
 			req.setAttribute("number", number);

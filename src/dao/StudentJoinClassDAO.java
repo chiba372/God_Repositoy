@@ -6,28 +6,21 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.Student;
 import bean.StudentJoinClass;
 
-/**
- * 学生テーブルにアクセスするDAO
- * @author s_yajima
- *
- */
 public class StudentJoinClassDAO extends DAO {
-	/**
-	 * 学生をすべて取得する
-	 * @return 学生のリスト
-	 * @throws Exception
-	 */
-	public List<StudentJoinClass> all() throws Exception {
+
+	public List<StudentJoinClass> gradeAll(int grade) throws Exception {
 		// 学生リスト
 		List<StudentJoinClass> list = new ArrayList<StudentJoinClass>();
 
 		Connection con = getConnection();
 		PreparedStatement st = con.prepareStatement(
 				"select s.id, s.name, class_no"
-				+ " from student s join student_class c on s.id = c.id");
+				+ " from student s join student_class c on s.id = c.id"
+				+ " where  = ?");
+		st.setInt(1, grade);
+
 		ResultSet rs = st.executeQuery();
 
 		while (rs.next()) {
@@ -43,23 +36,4 @@ public class StudentJoinClassDAO extends DAO {
 		// 学生リストを返却
 		return list;
 	}
-
-	public int insrat(Student student) throws Exception {
-		Connection con = getConnection();
-
-		// データベースを使った処理を記述
-		PreparedStatement st = con.prepareStatement(
-				"insert into student(NAME,GRADE,IMAGE) values(?, ?, ?)");
-		st.setString(1,student.getName());
-
-		int line=st.executeUpdate();
-
-
-		// データベースとの接続を解除（必ず書く！！！！！！！！）
-		st.close();
-		con.close();
-
-		return line;
-	}
-
 }
