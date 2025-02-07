@@ -32,6 +32,7 @@ public class CustomerDAO extends DAO {
             teacher.setId(rs.getString("id"));
             teacher.setName(rs.getString("name"));
             teacher.setPassword(rs.getString("password"));
+            teacher.setIs_master(rs.getBoolean("is_master"));
         }
 
         st.close();

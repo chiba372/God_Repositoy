@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.Teacher2;
+import bean.Teacher;
 
 public class TeacherDAO extends DAO {
 
-	public List<Teacher2> all() throws Exception {
-		List<Teacher2> list = new ArrayList<Teacher2>();
+	public List<Teacher> all() throws Exception {
+		List<Teacher> list = new ArrayList<Teacher>();
 
 		// データベースに接続
 		Connection con = getConnection();
@@ -22,11 +22,12 @@ public class TeacherDAO extends DAO {
 
 		// 結果から1件ずつ取り出すループ
 		while (rs.next()) {
-			Teacher2 p = new Teacher2();
+			Teacher p = new Teacher();
 			p.setId(rs.getString("id"));
 			p.setName(rs.getString("name"));
 			p.setPassword(rs.getString("password"));
-			p.setClass_no(rs.getString("class_no"));
+			p.setGeade(rs.getInt("grade"));
+			p.setClass_no(rs.getInt("class_no"));
 			p.setIs_master(rs.getBoolean("is_master"));
 
 			list.add(p);
@@ -39,13 +40,13 @@ public class TeacherDAO extends DAO {
 		return list;
 	}
 
-	public int updateClassNo(List<Teacher2> list) throws Exception {
+	public int updateClassNo(List<Teacher> list) throws Exception {
 		Connection con = getConnection();
 
-		for (Teacher2 teacher : list) {
+		for (Teacher teacher : list) {
 			PreparedStatement st = con.prepareStatement(
 					"update teacher set class_no = ? where id = ?");
-			st.setString(1,teacher.getClass_no());
+			st.setInt(1,teacher.getClass_no());
 			st.setString(2, teacher.getId());
 
 			int line=st.executeUpdate();
@@ -59,7 +60,7 @@ public class TeacherDAO extends DAO {
 		return 1;
 	}
 
-	public int update(Teacher2 teacher) throws Exception {
+	public int update(Teacher teacher) throws Exception {
 		Connection con = getConnection();
 		PreparedStatement st = con.prepareStatement(
 				"update teacher set name = ?, password = ?, is_master = ? where id = ?");
@@ -77,7 +78,7 @@ public class TeacherDAO extends DAO {
 		return line;
 	}
 
-	public int insert(Teacher2 teacher) throws Exception {
+	public int insert(Teacher teacher) throws Exception {
 		Connection con = getConnection();
 
 		// データベースを使った処理を記述
@@ -96,11 +97,11 @@ public class TeacherDAO extends DAO {
 
 		return line;
 	}
-	public int updateAndInsert(List<Teacher2> list) throws Exception {
+	public int updateAndInsert(List<Teacher> list) throws Exception {
 
 		Connection con = getConnection();
 
-		for (Teacher2 teacher : list) {
+		for (Teacher teacher : list) {
 			PreparedStatement st = con.prepareStatement(
 					"select id from teacher where id = ?");
 			st.setString(1,teacher.getId());

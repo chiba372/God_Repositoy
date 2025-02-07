@@ -61,9 +61,15 @@
                 if (teacher != null) {
                     String teacherName = teacher.getName();
                     out.print(teacherName);
-            %>
-            <a href="/Team-E/logout.jsp">ログアウト</a>
-            <%
+
+                    if (teacher.isIs_master()){
+                        %>
+                        <a href="/Team-E/manage/manage-menu">管理メニューへ</a>
+                        <%
+                    }
+	            %>
+	            <a href="/Team-E/logout.jsp">ログアウト</a>
+	            <%
                 }
             %>
         </div>

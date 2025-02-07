@@ -87,21 +87,29 @@
 
 <body>
 
-    <div class="header">
-        <h1>管理メニュー</h1>
-                <a href="/Team-E/teacher/menu2.jsp" class="login-btn">教員メニューへ</a>
+	<div class="header">
+		<h1>管理メニュー</h1>
+		<a href="/Team-E/teacher/menu2.jsp" class="login-btn">教員メニューへ</a>
 	</div>
 
-	<div class="nav-menu">
-		<a href="/Team-E/manage/calendar">カレンダー</a>
-		<a href="/Team-E/manage/class-list">クラス</a>
-		<a href="/Team-E/manage/teacher-manage">先生</a>
-	</div>
+	<c:choose>
+	<c:when test="${session_teacher.is_master}">
+		<!-- ユーザーがログインしている場合（例: ログアウトボタンを表示） -->
+		<div class="nav-menu">
+			<a href="/Team-E/manage/calendar">カレンダー</a>
+			<a href="/Team-E/manage/class-list">クラス</a>
+			<a href="/Team-E/manage/teacher-manage">先生</a>
+		</div>
 
-	<div class="content">
-		<p>${ param.content }</p>
-	</div>
-
+		<div class="content">
+			<p>${ param.content }</p>
+		</div>
+	</c:when>
+	<c:otherwise>
+		<!-- ユーザーがログインしていない場合 -->
+		<h1>ログインしていません</h1>
+	</c:otherwise>
+	</c:choose>
 
 </body>
 </html>

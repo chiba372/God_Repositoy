@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bean.Teacher2;
+import bean.Teacher;
 import dao.TeacherDAO;;
 
 @WebServlet(urlPatterns = { "/manage/teacher-manage" })
@@ -24,7 +24,7 @@ public class TeacherManage extends HttpServlet {
 		try {
 			// DAOをインスタンス化
 			TeacherDAO dao = new TeacherDAO();
-			List<Teacher2> list=dao.all();
+			List<Teacher> list=dao.all();
 
 			req.setAttribute("list", list);
 
@@ -40,7 +40,7 @@ public class TeacherManage extends HttpServlet {
 	PrintWriter out = resp.getWriter();
 		try {
 			TeacherDAO dao = new TeacherDAO();
-			List<Teacher2> list = new ArrayList<Teacher2>();
+			List<Teacher> list = new ArrayList<Teacher>();
 
 
 			String[] names = req.getParameterValues("name");
@@ -48,7 +48,7 @@ public class TeacherManage extends HttpServlet {
 			String[] passwords = req.getParameterValues("password");
 
 			for (int i = 0; i < names.length; i++) {
-				Teacher2 t = new Teacher2();
+				Teacher t = new Teacher();
 				t.setName(names[i]);
 				t.setId(ids[i]);
 				t.setPassword(passwords[i]);
