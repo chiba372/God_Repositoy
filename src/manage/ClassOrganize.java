@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import bean.StudentClass2;
 import bean.StudentJoinClass;
-import bean.Teacher2;
+import bean.Teacher;
 import dao.StudentJoinClassDAO;
 import dao.Student_ClassDAO2;
 import dao.TeacherDAO;
@@ -34,7 +34,7 @@ public class ClassOrganize extends HttpServlet {
 			int number = Integer.parseInt(req.getParameter("number"));
 
 			List<StudentJoinClass> slist=sdao.gradeAll(grade);
-			List<Teacher2> tlist=tdao.all();
+			List<Teacher> tlist=tdao.all();
 
 
 			req.setAttribute("grade", grade);
@@ -58,11 +58,11 @@ public class ClassOrganize extends HttpServlet {
 			int number = Integer.parseInt(req. getParameter("number"));
 			String[] teachers = req. getParameterValues("teacher");
 
-			List<Teacher2> tlist = new ArrayList<Teacher2>();
+			List<Teacher> tlist = new ArrayList<Teacher>();
 			for (int i = 0; i < number; i++) {
-				Teacher2 t= new Teacher2();
+				Teacher t= new Teacher();
 				t.setId(teachers[i]);
-				t.setClass_no(String.valueOf(i+1));
+				t.setClass_no(i+1);
 				tlist.add(t);
 
 				System.out.println(teachers[i]);
