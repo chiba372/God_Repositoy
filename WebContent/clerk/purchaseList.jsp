@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List, bean.PurchaseInfo" %>
+<%
+	Integer selectedGrade = (Integer) request.getAttribute("selectedGrade");
+	Integer selectedClassNo = (Integer) request.getAttribute("selectedClassNo");
+	List<Integer> classNumbers = (List<Integer>) request.getAttribute("classNumbers");
+%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -8,6 +13,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>購入リスト</title>
+	<script>
+		function updateClassSelect() {
+			var grade = document.getElementById("grade").value;
+			var classNo = document.getElementById("classNo").value;
+			window.location.href = "purchaseList?grade=" + grade + "&classNo=" + classNo;
+		}
+	</script>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -91,13 +103,28 @@
 			<label for="grade">学年を選択　</label>
 			<select id="grade" name="grade">
 				<option value="">全学年</option>
-				<option value="1" ${ selectedGrade == 1 ? "selected" : "" }>１年生</option>
-				<option value="2" ${ selectedGrade == 2 ? "selected" : "" }>２年生</option>
-				<option value="3" ${ selectedGrade == 3 ? "selected" : "" }>３年生</option>
-				<option value="4" ${ selectedGrade == 4 ? "selected" : "" }>４年生</option>
-				<option value="5" ${ selectedGrade == 5 ? "selected" : "" }>５年生</option>
-				<option value="6" ${ selectedGrade == 6 ? "selected" : "" }>６年生</option>
+				<option value="1" ${ selectedGrade == 1 ? "selected" : "" }>1年生</option>
+				<option value="2" ${ selectedGrade == 2 ? "selected" : "" }>2年生</option>
+				<option value="3" ${ selectedGrade == 3 ? "selected" : "" }>3年生</option>
+				<option value="4" ${ selectedGrade == 4 ? "selected" : "" }>4年生</option>
+				<option value="5" ${ selectedGrade == 5 ? "selected" : "" }>5年生</option>
+				<option value="6" ${ selectedGrade == 6 ? "selected" : "" }>6年生</option>
 			</select>
+			<!-- クラスを選択 -->
+			<label for="classNo">　クラスを選択　</label>
+			<select name="classNo" id="classNo">
+				<option value="">全クラス</option>
+				<%
+					if (classNumbers != null) {
+						for (Integer classNo : classNumbers) {
+				%>
+				<option value="<%= classNo %>" <%= (selectedClassNo != null && selectedClassNo == classNo) ? "selected" : ""%>><%= classNo %>組</option>
+				<%
+						}
+					}
+				%>
+			</select>
+
 			<button type="submit">検索</button>
 	</div>
 	<!-- 購入リスト -->
@@ -106,6 +133,7 @@
 				<th>児童番号</th>
 				<th>名前</th>
 				<th>学年</th>
+				<th>クラス</th>
 				<th>カタログ名</th>
 				<th>商品番号</th>
 				<th>個数</th>
@@ -119,7 +147,8 @@
 			<tr>
 				<td><%= purchase.getStudentId() %></td>
 				<td><%= purchase.getStudentName() %></td>
-				<td><%= purchase.getGrade() %>年生</td>
+				<td><%= purchase.getGrade() %>年</td>
+				<td><%= purchase.getClassNo() %>組</td>
 				<td><%= purchase.getProductName() %></td>
 				<td><%= purchase.getProductId() %></td>
 				<td><%= purchase.getProQua() %></td>
@@ -130,9 +159,11 @@
 				} else {
 			%>
 			<tr>
-				<td colspan="7">データがありません</td>
+				<td colspan="8">データがありません</td>
 			</tr>
-			<% } %>
+			<%
+				}
+			%>
 		</table>
 	</div>
 

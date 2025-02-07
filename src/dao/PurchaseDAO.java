@@ -64,17 +64,21 @@ public class PurchaseDAO extends DAO {
 //	}
 
 	// 事務員ページに表示する商品購入リストのメソッド
-	public List<PurchaseInfo> getPurchaseList(Integer gradeFilter) {
+	public List<PurchaseInfo> getPurchaseList(Integer gradeFilter, Integer classNoFilter) {
 		List<PurchaseInfo> purchaseList = new ArrayList<>();
-		String sql = "SELECT p.ID AS PRODUCT_ID, p.NAME AS PRODUCT_NAME, s.ID AS STUDENT_ID, s.NAME AS STUDENT_NAME, sc.GRADE, pu.PRO_QUA, (pu.PRO_QUA * p.PRICE) AS TOTAL " +
+		String sql = "SELECT p.ID AS PRODUCT_ID, p.NAME AS PRODUCT_NAME, s.ID AS STUDENT_ID, s.NAME AS STUDENT_NAME, sc.GRADE, sc.CLASS_NO, pu.PRO_QUA, (pu.PRO_QUA * p.PRICE) AS TOTAL " +
 					   "FROM PURCHASE pu " +
 					   "JOIN PRODUCT p ON pu.PRODUCT_ID = p.ID " +
 					   "JOIN STUDENT s ON pu.STUDENT_ID = s.ID " +
-					   "JOIN STUDENT_CLASS sc ON s.ID = sc.ID ";
+					   "JOIN STUDENT_CLASS sc ON s.ID = sc.ID " +
+					   "WHERE 1=1 ";
 
 
 		if (gradeFilter != null) {
-			sql += "WHERE sc.GRADE = ?";
+			sql += "AND sc.GRADE = ?";
+		}
+		if (classNoFilter != null) {
+			sql += "AND sc.CLASS_NO = ?";
 		}
 
 		sql += " ORDER BY s.ID ASC";
@@ -82,8 +86,12 @@ public class PurchaseDAO extends DAO {
 		try (Connection con = DbUtil.getConnection();
 			  PreparedStatement pstmt = con.prepareStatement(sql)) {
 
+			int paramIndex = 1;
 			if (gradeFilter != null) {
-				pstmt.setInt(1, gradeFilter);
+				pstmt.setInt(paramIndex++, gradeFilter);
+			}
+			if (classNoFilter != null) {
+				pstmt.setInt(paramIndex++, classNoFilter);
 			}
 
 			try (ResultSet rs = pstmt.executeQuery()) {
@@ -93,16 +101,36 @@ public class PurchaseDAO extends DAO {
 					int studentId = rs.getInt("STUDENT_ID");
 					String studentName = rs.getString("STUDENT_NAME");
 					int grade = rs.getInt("GRADE");
+					int classNo = rs.getInt("CLASS_NO");
 					int proQua = rs.getInt("PRO_QUA");
 					int total = rs.getInt("TOTAL");
 
-					purchaseList.add(new PurchaseInfo(productId, productName, studentId, studentName, grade, proQua, total));
+					purchaseList.add(new PurchaseInfo(productId, productName, studentId, studentName, grade, classNo, proQua, total));
 				}
 			}
 		} catch (SQLException e){
 			e.printStackTrace();
 		}
 		return purchaseList;
+	}
+
+	// 指定した学年に対する CLASS_NO（組）を取得するメソッド
+	public List<Integer> getClassNumbersByGrade(int grade) {
+		List<Integer> classNumbers = new ArrayList<>();
+		String sql = "SELECT DISTINCT CLASS_NO FROM STUDENT_CLASS WHERE GRADE = ? ORDER BY CLASS_NO";
+
+		try (Connection con = DbUtil.getConnection();
+			  PreparedStatement pst = con.prepareStatement(sql)) {
+			pst.setInt(1, grade);
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				classNumbers.add(rs.getInt("CLASS_NO"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return classNumbers;
 	}
 
 }
