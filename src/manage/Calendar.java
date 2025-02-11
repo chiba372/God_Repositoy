@@ -44,9 +44,8 @@ public class Calendar extends HttpServlet {
 			req.setAttribute("month", currentMonth);
 			req.setAttribute("day", day);
 
-			List<Event> monthList = dao.oneMonth(currentYear, currentMonth);
-			req.setAttribute("monthList", monthList);
-
+			List<Integer> eventList = dao.oneMonth(currentYear, currentMonth);
+			req.setAttribute("eventList", eventList);
 
 			if (day != null) {
 				int currentDay = Integer.parseInt(day);

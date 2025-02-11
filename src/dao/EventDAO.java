@@ -13,16 +13,16 @@ public class EventDAO extends DAO {
 	//
 	//
 	// 指定の1か月のイベントを取得
-	public List<Event> oneMonth(int year, int month) throws Exception {
+	public List<Integer> oneMonth(int year, int month) throws Exception {
 		Date fastMonth =new Date(year-1900, month-1, 1) ;
 		Date endMonth =new Date(year-1900, month, 1) ;
 
-		List<Event> list = new ArrayList<Event>();
+		List<Integer> list = new ArrayList<Integer>();
 		// データベースに接続
 		Connection con = getConnection();
 
 		PreparedStatement st = con.prepareStatement(
-				"select * from event where date between ? and ? order by date");
+				"select distinct date from event where date between ? and ? order by date");
         st.setDate(1,  fastMonth);
         st.setDate(2,  endMonth);
 
@@ -30,14 +30,8 @@ public class EventDAO extends DAO {
 
 		// 結果から1件ずつ取り出すループ
 		while (rs.next()) {
-			Event e = new Event();
-			e.setId(rs.getString("id"));
-			e.setDate(rs.getDate("date"));
-			e.setName(rs.getString("name"));
-			e.setContent(rs.getString("content"));
-			e.setGrade(rs.getInt("grade"));
-
-			list.add(e);
+			Date day = rs.getDate("date") ;
+			list.add(day.getDate());
 		}
 		st.close();
 		con.close();

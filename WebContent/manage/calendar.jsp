@@ -52,13 +52,13 @@
 		padding: 5px; /* 余白を小さく設定 */
 		text-align: left; /* 左寄せ */
 		vertical-align: top; /* 上寄せ */
-		height: 60px; /* セルの高さを統一 */
+		height: 120px; /* セルの高さを統一 */
 		width: 14.28%; /* カレンダー全体の幅を均等にする */
 		box-sizing: border-box; /* パディングを含めて幅を計算 */
 	}
 
 	.scrollable {
-		max-height: 400px;
+		max-height: 600px;
 		overflow-y: auto;
 	}
 
@@ -173,10 +173,6 @@
 	let currentMonth = params.get("month")
 	let day = params.get("day")
 
-	var monthList = "<%= request.getAttribute("monthList") %>";
-	console.log(monthList);
-
-
 	// カレンダー関連初期化
 	let today = new Date();
 	if (currentYear == null) {
@@ -219,6 +215,7 @@
 				} else if (day > daysInMonth) {
 					cell.textContent = '';
 				} else {
+					cell.setAttribute('id','td'+day)
 					var td = '';
 					td += '<a style="font-size: 150%;" href="/Team-E/manage/calendar';
 					td += '?year='+currentYear+'&month='+currentMonth+'&day='+day+'">'+day+'</a>';
@@ -234,9 +231,18 @@
 				break;
 			}
 		}
+		for (var event of <%= request.getAttribute("eventList") %>){
+			var a = 'td'+event
+			console.log(a)
+
+			const target = document.getElementById('td'+event);
+			const cell = document.createElement('h3');
+
+			var p = '🎪イベント🎪';
+			cell.innerHTML = p;
+			target.appendChild(cell);
+		}
 	}
-
-
 
 	function previousMonth() {
 	    currentMonth--;
@@ -244,7 +250,7 @@
 	        currentMonth = 12;
 	        currentYear--;
 	    }
-	    updateCalendar(currentYear, currentMonth);
+	    window.location.href = '/Team-E/manage/calendar?year='+currentYear+'&month='+currentMonth;
 	}
 
 	function nextMonth() {
@@ -253,7 +259,7 @@
 			currentMonth = 1;
 			currentYear++;
 		}
-		updateCalendar(currentYear, currentMonth);
+	    window.location.href = '/Team-E/manage/calendar?year='+currentYear+'&month='+currentMonth;
 	}
 
 	// 初期カレンダー表示
