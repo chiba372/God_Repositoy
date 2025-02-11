@@ -89,7 +89,7 @@ public class AllTempreture extends HttpServlet {
 
             // ナビゲーションメニュー
             out.println("<div class='nav-menu'>");
-            out.println("<a href='/Team-E/teacher/calendar.jsp'>カレンダー</a>");
+            out.println("<a href='/Team-E/teacher/calendar'>カレンダー</a>");
             out.println("<a href='/Team-E/teacher/post'>連絡</a>");
             out.println("<a href='/Team-E/teacher/money'>集金</a>");
             out.println("<a href='/Team-E/teacher/temperature'>体温</a>");

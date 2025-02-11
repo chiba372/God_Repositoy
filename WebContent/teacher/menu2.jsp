@@ -77,11 +77,16 @@
 
     <!-- ナビゲーションメニュー -->
     <div class="nav-menu">
-        <a href="/Team-E/teacher/calendar.jsp">カレンダー</a>
+        <a href="/Team-E/teacher/calendar">カレンダー</a>
         <a href="/Team-E/teacher/post">連絡</a>
         <a href="/Team-E/teacher/money">集金</a>
         <a href="/Team-E/teacher/temperature">体温一覧</a>
         <a href="/Team-E/teacher/children">児童</a>
     </div>
+
+   	<div class="content">
+		<p>${ param.content }</p>
+	</div>
+
 </body>
 </html>
