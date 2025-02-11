@@ -64,8 +64,6 @@ public class ClassOrganize extends HttpServlet {
 				t.setId(teachers[i]);
 				t.setClass_no(i+1);
 				tlist.add(t);
-
-				System.out.println(teachers[i]);
 			}
 
 			int t = tdao.updateClassNo(tlist);

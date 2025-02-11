@@ -52,55 +52,56 @@
 
 	<h1>${grade}年生の編成</h1>
 
-<form action="class-organize" method="post">
+	<form action="class-organize" method="post">
+		<input type="hidden" name="number" value="${number}">
+
 		<h2>担任の設定</h2>
 		<div style="; display:flex; flex-wrap: wrap; justify-content:space-around;">
-
 		<c:forEach begin="1" end="${number}" varStatus="i">
 
-		<div>
-			<label>${i.count}組</label>
+			<div>
+				<label>${i.count}組</label>
 
-			<select name="teacher" style="width:10em; height:4em;">
-				<c:forEach var="p" items="${tlist}">
-				<option value="${p.id}">${p.name}</option>
-				</c:forEach>
-			</select>
-		</div>
+				<select name="teacher" style="width:10em; height:4em;">
+					<c:forEach var="p" items="${tlist}">
+					<option value="${p.id}">${p.name}</option>
+					</c:forEach>
+				</select>
+			</div>
 
 		</c:forEach>
 		</div>
 
-	<div>
-		<h2>児童の設定</h2>
-		<div class="table_box">
-		<table>
-			<tr>
-				<th class="sticky">ID</th>
-				<th class="sticky">名前</th>
-				<c:forEach begin="1" end="${number}" varStatus="i">
-				<th class="sticky">${i.count}組</th>
-				</c:forEach>
-				<th class="sticky">在籍無し</th>
-			</tr>
+		<div>
+			<h2>児童の設定</h2>
+			<div class="table_box">
+			<table>
+				<tr>
+					<th class="sticky">ID</th>
+					<th class="sticky">名前</th>
+					<c:forEach begin="1" end="${number}" varStatus="i">
+					<th class="sticky">${i.count}組</th>
+					</c:forEach>
+					<th class="sticky">在籍無し</th>
+				</tr>
 
-			<c:forEach var="p" items="${slist}" varStatus="status">
-			<tr>
-				<td>${p.id}<input type="hidden" name="student" value="${p.id}"></td>
-				<td>${p.name}</td>
+				<c:forEach var="p" items="${slist}" varStatus="status">
+				<tr>
+					<td>${p.id}<input type="hidden" name="student" value="${p.id}"></td>
+					<td>${p.name}</td>
 
-				<c:forEach begin="1" end="${number}" varStatus="i">
-				<td><input type="radio" name="class_no[${status.index}]" value="${i.count}" style="transform: scale(2.5);"></td>
+					<c:forEach begin="1" end="${number}" varStatus="i">
+					<td><input type="radio" name="class_no[${status.index}]" value="${i.count}" style="transform: scale(2.5);"></td>
+					</c:forEach>
+					<td><input type="radio" name="class_no[${status.index}]" value="0" style="transform: scale(2.5);" checked></td>
+				</tr>
 				</c:forEach>
-				<td><input type="radio" name="class_no[${status.index}]" value="0" style="transform: scale(2.5);" checked></td>
-			</tr>
-			</c:forEach>
-		</table>
+			</table>
+			</div>
 		</div>
-	</div>
 
-	<input type="submit" value="送信" style="width:10em; height:4em;">
-</form>
+		<input type="submit" value="送信" style="width:10em; height:4em;">
+	</form>
 
 
 
