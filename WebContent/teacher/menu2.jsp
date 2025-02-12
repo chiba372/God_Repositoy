@@ -68,7 +68,7 @@
                         <%
                     }
 	            %>
-	            <a href="/Team-E/logout.jsp">ログアウト</a>
+	            <a href="/Team-E/menu.jsp">ログアウト</a>
 	            <%
                 }
             %>
