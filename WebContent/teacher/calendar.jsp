@@ -155,13 +155,6 @@
 				<p>${e.content}</p>
 			</c:forEach>
 			</p>
-			<form action="calendar" method="post">
-				<input type="hidden" name="year" value="${year}">
-				<input type="hidden" name="month" value="${month}">
-				<input type="hidden" name="day" value="${day}">
-
-				<input type="submit" value="イベント追加">
-			</form>
 		</div>
 	</div>
 </div>
