@@ -53,6 +53,7 @@
 	<h1>${grade}年生の編成</h1>
 
 	<form action="class-organize" method="post">
+		<input type="hidden" name="grade" value="${grade}">
 		<input type="hidden" name="number" value="${number}">
 
 		<h2>担任の設定</h2>

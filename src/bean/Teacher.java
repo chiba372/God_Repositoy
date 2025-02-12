@@ -10,7 +10,7 @@ public class Teacher implements Serializable {
 	// パスワード
 	private String password;
 	// 担当学年
-	private int geade;
+	private int grade;
 	// 担当クラス
 	private int class_no;
 	// 管理権限の有無
@@ -26,8 +26,8 @@ public class Teacher implements Serializable {
 	public String getPassword() {
 		return password;
 	}
-	public int getGeade() {
-		return geade;
+	public int getGrade() {
+		return grade;
 	}
 	public int getClass_no() {
 		return class_no;
@@ -46,8 +46,8 @@ public class Teacher implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public void setGeade(int geade) {
-		this.geade = geade;
+	public void setGrade(int grade) {
+		this.grade = grade;
 	}
 	public void setClass_no(int class_no) {
 		this.class_no = class_no;

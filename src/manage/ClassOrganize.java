@@ -55,6 +55,7 @@ public class ClassOrganize extends HttpServlet {
 		try {
 			TeacherDAO tdao = new TeacherDAO();
 
+			int grade = Integer.parseInt(req.getParameter("grade"));
 			int number = Integer.parseInt(req. getParameter("number"));
 			String[] teachers = req. getParameterValues("teacher");
 
@@ -62,14 +63,14 @@ public class ClassOrganize extends HttpServlet {
 			for (int i = 0; i < number; i++) {
 				Teacher t= new Teacher();
 				t.setId(teachers[i]);
+				t.setGrade(grade);
 				t.setClass_no(i+1);
 				tlist.add(t);
 			}
+			int s = tdao.updateClassNo(tlist);
 
-			int t = tdao.updateClassNo(tlist);
 
 			Student_ClassDAO2 cdao = new Student_ClassDAO2();
-
 			String[] students = req. getParameterValues("student");
 
 			List<StudentClass2> slist = new ArrayList<StudentClass2>();
@@ -82,7 +83,15 @@ public class ClassOrganize extends HttpServlet {
 
 				slist.add(p);
 			}
-			int c = cdao.inserts(slist);
+			s = cdao.inserts(slist);
+
+
+			StudentJoinClassDAO sdao = new StudentJoinClassDAO();
+			for (int i = 1; i <= cdao.maxClassNo(grade); i++) {
+				List<String> ClassAll = sdao.classAllNameASC(grade, i);
+				cdao.setNumber(ClassAll);
+			}
+			s = cdao.delNumber();
 
 			resp.sendRedirect("class-list");
 

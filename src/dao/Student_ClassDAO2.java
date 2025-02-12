@@ -73,4 +73,35 @@ public class Student_ClassDAO2 extends DAO {
   		con.close();
   		return 1;
   	}
+
+
+	public int setNumber(List<String> list) throws Exception  {
+	Connection con = getConnection();
+		int number = 1;
+
+		for (String id : list){
+			PreparedStatement st = con.prepareStatement(
+				"update student_class set number = ? where id = ?");
+
+			st.setInt(1, number);
+			st.setString(2, id);
+			st.executeUpdate();
+
+			st.close();
+			number++;
+		}
+
+		con.close();
+    	return 1;
+	}
+	public int delNumber() throws Exception  {
+	Connection con = getConnection();
+		PreparedStatement st = con.prepareStatement(
+			"update student_class set number = 0 where class_no = 0");
+		st.executeUpdate();
+
+		st.close();
+		con.close();
+    	return 1;
+	}
 }

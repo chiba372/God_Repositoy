@@ -45,7 +45,7 @@ public class StudentJoinClassDAO extends DAO {
 		PreparedStatement st = con.prepareStatement(
 				"select s.id, s.name, class_no"
 				+ " from student s join student_class c on s.id = c.id"
-				+ " where grade = ? order by class_no");
+				+ " where grade = ? and class_no != 0 order by class_no ");
 		st.setInt(1, grade);
 
 		ResultSet rs = st.executeQuery();
@@ -63,4 +63,28 @@ public class StudentJoinClassDAO extends DAO {
 		// 学生リストを返却
 		return list;
 	}
+
+	public List<String> classAllNameASC(int grade, int class_no)throws Exception  {
+		List<String> list = new ArrayList<String>();
+
+		Connection con = getConnection();
+		PreparedStatement st = con.prepareStatement(
+				"select s.id"
+				+ " from student s join student_class c on s.id = c.id"
+				+ " where grade = ? and class_no = ? order by name");
+		st.setInt(1, grade);
+		st.setInt(2, class_no);
+
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+			list.add(rs.getString("id"));
+		}
+
+		st.close();
+		con.close();
+
+		return list;
+	}
+
 }

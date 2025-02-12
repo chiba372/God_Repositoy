@@ -26,7 +26,7 @@ public class TeacherDAO extends DAO {
 			p.setId(rs.getString("id"));
 			p.setName(rs.getString("name"));
 			p.setPassword(rs.getString("password"));
-			p.setGeade(rs.getInt("grade"));
+			p.setGrade(rs.getInt("grade"));
 			p.setClass_no(rs.getInt("class_no"));
 			p.setIs_master(rs.getBoolean("is_master"));
 
@@ -45,9 +45,10 @@ public class TeacherDAO extends DAO {
 
 		for (Teacher teacher : list) {
 			PreparedStatement st = con.prepareStatement(
-					"update teacher set class_no = ? where id = ?");
+					"update teacher set class_no = ?, grade = ? where id = ?");
 			st.setInt(1,teacher.getClass_no());
-			st.setString(2, teacher.getId());
+			st.setInt(2, teacher.getGrade());
+			st.setString(3, teacher.getId());
 
 			int line=st.executeUpdate();
 
