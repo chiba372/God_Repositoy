@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import bean.Event;
@@ -15,7 +16,13 @@ public class EventDAO extends DAO {
 	// 指定の1か月のイベントを取得
 	public List<Integer> oneMonth(int year, int month) throws Exception {
 		Date fastMonth =new Date(year-1900, month-1, 1) ;
-		Date endMonth =new Date(year-1900, month, 1) ;
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month);
+		int lastDayOfMonth = cal.getActualMaximum(Calendar.DATE);
+
+		Date endMonth =new Date(year-1900, month-1, lastDayOfMonth) ;
 
 		List<Integer> list = new ArrayList<Integer>();
 		// データベースに接続
