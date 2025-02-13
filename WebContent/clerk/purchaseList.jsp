@@ -113,7 +113,7 @@
 		<form action="purchaseList" method="get">
 			<!-- 学年選択 -->
 			<label for="grade">学年を選択　</label>
-			<select id="grade" name="grade">
+			<select id="grade" name="grade" onchange="updateClassSelect()">
 				<option value="">全学年</option>
 				<option value="1" ${ selectedGrade == 1 ? "selected" : "" }>1年生</option>
 				<option value="2" ${ selectedGrade == 2 ? "selected" : "" }>2年生</option>
