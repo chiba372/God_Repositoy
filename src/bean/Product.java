@@ -1,43 +1,21 @@
 package bean;
 
-import java.io.Serializable;
+public class Product {
+    private int id;
+    private int catalogId;
+    private String name;
+    private int price;
 
-public class Product implements Serializable {
-	private int id;
-	private String name;
-	private int price;
-	private String image;
+    // ゲッター・セッター
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-	public int getId() {
-		return id;
-	}
+    public int getCatalogId() { return catalogId; }
+    public void setCatalogId(int catalogId) { this.catalogId = catalogId; }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-	public int getPrice() {
-		return price;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
+    public int getPrice() { return price; }
+    public void setPrice(int price) { this.price = price; }
 }

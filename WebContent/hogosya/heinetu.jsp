@@ -1,11 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>  <!-- JDBCを使用するためのインポート -->
+<%@ include file="/WEB-INF/views/header.jsp" %> <!-- ここで共通ヘッダーを読み込む -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SchoolOrganizer - 平熱設定</title>
+    <title>平熱設定</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/header.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,64 +18,6 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-        }
-        .header {
-            width: 100%;
-            max-width: 1600px;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            border-bottom: 1px solid #ccc;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 2;
-        }
-        .header a {
-            text-decoration: none;
-            color: #333;
-            font-size: 28px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .header a:hover {
-            color: #007bff;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
-        }
-        .menu {
-            display: none;
-            position: absolute;
-            top: 80px;
-            left: 0;
-            width: 100%;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 1;
-        }
-        .menu.active {
-            display: block;
-        }
-        .menu ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        .menu ul li {
-            padding: 15px 20px;
-            border-bottom: 1px solid #ccc;
-        }
-        .menu ul li a {
-            text-decoration: none;
-            color: #333;
-            font-size: 18px;
-            transition: color 0.2s;
-        }
-        .menu ul li a:hover {
-            color: #007bff;
         }
         .container {
             flex: 1;
@@ -155,62 +99,38 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <!-- ハンバーガーメニュー -->
-        <a href="#" class="menu-icon" onclick="toggleMenu()">☰</a>
-
-        <!-- 中央のタイトル -->
-        <a href="home.html">
-            <h1>SchoolOrganizer</h1>
-        </a>
-
-        <!-- 右上の扉アイコン -->
-        <a href="logout.html" class="logout-icon">🚪</a>
-    </header>
-
-    <!-- メニュー -->
-    <nav class="menu" id="menu">
-        <ul>
-            <li><a href="logout.html">> ログアウト</a></li>
-            <li><a href="calendar.html">> カレンダー</a></li>
-            <li><a href="important.html">> 重要連絡</a></li>
-            <li><a href="supplies.html">> 学用品購入</a></li>
-            <li><a href="temperature.html">> 体温報告</a></li>
-            <li><a href="contact.html">> ご連絡の場合</a></li>
-            <li><a href="profile.html">> プロフィール設定</a></li>
-        </ul>
-    </nav>
 
     <main class="container">
         <!-- 平熱設定フォーム -->
         <div class="form-wrapper" id="form-container">
             <a href="javascript:history.back()" class="btn-back">戻る</a>
             <h2>平熱設定</h2>
-            <form id="normal-temperature-form">
+
+            <!-- フォーム -->
+            <form id="normal-temperature-form" action="<%= request.getContextPath() %>/heinetu-save" method="post">
                 <div class="form-group">
                     <label for="normal-temperature">平熱</label>
-                    <input type="number" id="normal-temperature" name="normal-temperature" step="0.1" value="" required> 度
+                    <input type="number" id="normal-temperature" name="normal-temperature" step="0.1" required> 度
                 </div>
                 <div style="text-align: center;">
                     <button type="submit" class="btn">保存</button>
                 </div>
             </form>
-        </div>
 
-        <!-- 保存完了メッセージ -->
-        <div id="success-message" class="success-message">
-            <h1>保存が完了しました！</h1>
-            <p>平熱の設定が保存されました。</p>
-            <a href="top.jsp" class="btn">戻る</a>
+            <!-- エラーメッセージ表示 -->
+            <% if (request.getParameter("error") != null) { %>
+                <p class="error-message">保存に失敗しました。もう一度お試しください。</p>
+            <% } %>
+
+            <!-- 成功メッセージ表示 -->
+            <% if ("true".equals(request.getParameter("success"))) { %>
+                <p class="success-message">平熱が保存されました。</p>
+            <% } %>
         </div>
     </main>
 
+	<!-- これいるのかな？ -->
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('active');
-        }
-
         // 平熱設定フォームの送信処理
         document.getElementById('normal-temperature-form').addEventListener('submit', (event) => {
             event.preventDefault();

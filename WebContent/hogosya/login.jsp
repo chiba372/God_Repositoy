@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>  <!-- JDBCを使用するためのインポート -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -87,10 +86,10 @@
 <body>
     <div class="login-container">
         <h1>ログイン</h1>
-        <form action="dashboard.html" method="post">
+        <form action="${pageContext.request.contextPath}/hogosya/login" method="post">
             <div class="form-group">
-                <label for="student-id">学生番号</label>
-                <input type="text" id="student-id" name="student-id" placeholder="0123456" required>
+                <label for="id">児童ID</label>
+                <input type="text" id="id" name="id" placeholder="20XXXXXX" required>
             </div>
             <div class="form-group">
                 <label for="password">パスワード</label>
@@ -98,11 +97,13 @@
                 <button type="button" class="toggle-password" onclick="togglePassword()">表示</button>
             </div>
             <div class="form-group">
-                <a href="forgot-password.html">パスワードを忘れた場合はこちら</a>
+                <a href="mail.jsp">パスワードを忘れた場合はこちら</a>
             </div>
             <button type="submit" class="login-button">ログイン</button>
+        	<p style="color: red;">${ errorMessage }</p>
         </form>
     </div>
+
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');

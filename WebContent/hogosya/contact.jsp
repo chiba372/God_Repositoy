@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*" %>
+<%@ include file="/WEB-INF/views/header.jsp" %> <!-- ここで共通ヘッダーを読み込む -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>重要連絡</title>
+    <title>連絡</title>
+    <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/header.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,38 +15,6 @@
             padding: 0;
             background-color: #f9f9f9;
         }
-
-        .header {
-            width: 100%;
-            max-width: 1600px;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 40px;
-            border-bottom: 1px solid #ccc;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header a {
-            text-decoration: none;
-            color: #333;
-            font-size: 28px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .header a:hover {
-            color: #007bff;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
-        }
-
         .container {
             max-width: 800px;
             margin: 20px auto;
@@ -54,59 +23,83 @@
             border: 1px solid #ccc;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         .announcement {
             border-bottom: 1px solid #ccc;
             padding: 10px 0;
             cursor: pointer;
         }
-
-        .announcement:last-child {
-            border-bottom: none;
-        }
-
         .announcement-title {
             font-size: 18px;
             font-weight: bold;
             margin: 0;
         }
-
         .announcement-details {
             display: none;
             margin-top: 10px;
             font-size: 16px;
             color: #555;
         }
-
         .announcement-details.active {
             display: block;
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <a href="#" class="menu-icon">☰</a>
-        <h1>重要連絡</h1>
-        <a href="logout.html" class="logout-icon">🚪</a>
-    </header>
 
     <div class="container">
-        <div class="announcement" onclick="toggleDetails(this)">
-            <p class="announcement-title">9/17 「来月末の運動会について」</p>
-            <div class="announcement-details">
-                <p>対象: 全体</p>
-                <p>掲載期間: 9/17 ~ 10/31</p>
-                <p>内容: 運動会の詳細については追ってお知らせします。</p>
-            </div>
-        </div>
-        <div class="announcement" onclick="toggleDetails(this)">
-            <p class="announcement-title">9/1 「三者面談の日程について」</p>
-            <div class="announcement-details">
-                <p>対象: クラス</p>
-                <p>掲載期間: 9/1 ~ 9/30</p>
-                <p>内容: 各家庭への三者面談の日程は以下の通りです。</p>
-            </div>
-        </div>
+        <%
+            // JDBC接続情報
+            String url = "jdbc:h2:tcp://localhost/~/javad/teamE/SchoolOrganizer";
+            String user = "sa"; // ユーザー名 (デフォルトは 'sa')
+            String password = ""; // パスワード (デフォルトは空)
+
+            // データベース接続
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+
+            try {
+                // JDBCドライバをロード
+                Class.forName("org.h2.Driver");
+
+                // データベースに接続
+                conn = DriverManager.getConnection(url, user, password);
+
+                // SQLクエリの準備
+                String sql = "SELECT DATE, NAME, CONTENT, WHOM FROM CONTACT ORDER BY DATE DESC";
+                pstmt = conn.prepareStatement(sql);
+
+                // クエリを実行
+                rs = pstmt.executeQuery();
+
+                // データを表示
+                while (rs.next()) {
+                    String date = rs.getString("DATE");
+                    String name = rs.getString("NAME");
+                    String content = rs.getString("CONTENT");
+                    String whom = rs.getString("WHOM");
+        %>
+                    <div class="announcement" onclick="toggleDetails(this)">
+                        <p class="announcement-title"><%= date %> 「<%= name %>」</p>
+                        <div class="announcement-details">
+                            <p>対象: <%= whom %></p>
+                            <p>内容: <%= content %></p>
+                        </div>
+                    </div>
+        <%
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (rs != null) rs.close();
+                    if (pstmt != null) pstmt.close();
+                    if (conn != null) conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        %>
     </div>
 
     <script>
@@ -115,5 +108,6 @@
             details.classList.toggle('active');
         }
     </script>
+
 </body>
 </html>

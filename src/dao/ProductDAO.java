@@ -7,138 +7,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.Product;
+import util.DbUtil;
 
-public class ProductDAO extends DAO {
-	// 商品名で検索するメソッド
-	public List<Product> search(String keyword) throws Exception {
-		// Productを要素に持つList
-		List<Product> list = new ArrayList<Product>();
+public class ProductDAO {
+    // 特定のIDの商品を取得する
+    public Product getProductById(int id) {
+        Product product = null;
+        String sql = "SELECT * FROM product WHERE id = ?";
 
-		// データベースから商品を検索してリストに追加する処理
-		// データベースに接続
-		Connection con = getConnection();
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
 
-		// データベースを使った処理を記述
+            if (rs.next()) {
+                product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setCatalogId(rs.getInt("catalog_id"));
+                product.setName(rs.getString("name"));
+                product.setPrice(rs.getInt("price"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		// 実行したいSQL文をプリペアードステートメントで準備
-		// "?" -> プレースホルダ
-		PreparedStatement st = con.prepareStatement("select * from product where name like ?");
-		// st.setStringメソッド...プリペアードステートメント
-		// のプレースホルダに値を埋め込む（バインド）する
-		// 第1引数＝プレースホルダ番号
-		st.setString(1, "%" + keyword + "%");
-		// SQL文を実行した結果をリザルトセットに格納
-		ResultSet rs = st.executeQuery();
+        return product;
+    }
 
-		// 取得した結果を表示
-		// 結果から1件ずつ取り出すループ
-		while (rs.next()) {
-			// Productクラスをインスタンス化
-			Product p = new Product();
-			// 値をセット
-			p.setId(rs.getInt("id"));
-			p.setName(rs.getString("name"));
-			p.setPrice(rs.getInt("price"));
-			p.setImage(rs.getString("image"));
-			// リストに追加
-			list.add(p);
-		}
+    // 選択された商品を購入履歴に保存する
+    public void saveOrder(int studentId, List<Product> productList) {
+        String sql = "INSERT INTO PURCHASE (STUDENT_ID, PRODUCT_ID, PRO_QUA) VALUES (?, ?, ?)";
 
-		// データベースとの接続を解除（必ず書く！！！！！！！！）
-		st.close();
-		con.close();
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (Product product : productList) {
+                pstmt.setInt(1, studentId);
+                pstmt.setInt(2, product.getId());
+                pstmt.setInt(3, 1);
+                pstmt.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-		// 商品リストを返却
-		return list;
-	}
+    // カタログごとの商品を取得する（追加）
+    public List<Product> getProductsByCatalogId(int catalogId) {
+        List<Product> productList = new ArrayList<>();
+        String sql = "SELECT * FROM product WHERE catalog_id = ?";
 
-	// すべての商品を参照するメソッド
-	public List<Product> all() throws Exception {
-		// Productを要素に持つList
-		List<Product> list = new ArrayList<Product>();
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, catalogId);
+            ResultSet rs = pstmt.executeQuery();
 
-		// データベースに接続
-		Connection con = getConnection();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setCatalogId(rs.getInt("catalog_id"));
+                product.setName(rs.getString("name"));
+                product.setPrice(rs.getInt("price"));
+                productList.add(product);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-		// 実行したいSQL文をプリペアードステートメントで準備
-		PreparedStatement st = con.prepareStatement("select * from product");
-		// SQL文を実行した結果をリザルトセットに格納
-		ResultSet rs = st.executeQuery();
-
-		// 結果から1件ずつ取り出すループ
-		while (rs.next()) {
-			// Productクラスをインスタンス化
-			Product p = new Product();
-			// 値をセット
-			p.setId(rs.getInt("id"));
-			p.setName(rs.getString("name"));
-			p.setPrice(rs.getInt("price"));
-			p.setImage(rs.getString("image"));
-			// リストに追加
-			list.add(p);
-		}
-
-		// データベースとの接続を解除（必ず書く！！！！！！！！）
-		st.close();
-		con.close();
-
-		// 商品リストを返却
-		return list;
-	}
-
-	// 商品を登録するメソッド
-	public int insert(Product product) throws Exception {
-		Connection con = getConnection();
-
-		PreparedStatement st = con.prepareStatement("insert into product values(null, ?, ?, ?)");
-		st.setString(1, product.getName());
-		st.setInt(2, product.getPrice());
-		st.setString(3, product.getImage());
-		int line = st.executeUpdate();
-
-		st.close();
-		con.close();
-
-		return line;
-	}
-
-	// IDを指定して商品を取得するメソッドget
-	public Product get(int id) throws Exception {
-		// Productのインスタンス
-		Product p = new Product();
-
-		// データベースに接続
-		Connection con = getConnection();
-
-		// データベースを使った処理を記述
-
-		// 実行したいSQL文をプリペアードステートメントで準備
-		// "?" -> プレースホルダ
-		PreparedStatement st = con.prepareStatement("select * from product where id = ?");
-		// st.setStringメソッド...プリペアードステートメント
-		// のプレースホルダに値を埋め込む（バインド）する
-		// 第1引数＝プレースホルダ番号
-		st.setInt(1, id);
-		// SQL文を実行した結果をリザルトセットに格納
-		ResultSet rs = st.executeQuery();
-
-		// 結果から1件取り出す
-		if (rs.next()) {
-			// 値をセット
-			p.setId(rs.getInt("id"));
-			p.setName(rs.getString("name"));
-			p.setPrice(rs.getInt("price"));
-			p.setImage(rs.getString("image"));
-		} else {
-			p = null;
-		}
-
-		// データベースとの接続を解除（必ず書く！！！！！！！！）
-		st.close();
-		con.close();
-
-		// 商品を返却
-		return p;
-	}
-
+        return productList;
+    }
 }
