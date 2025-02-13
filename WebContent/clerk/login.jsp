@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ログイン</title>
+<title>事務職員ログイン</title>
 <style>
 body {
     font-family: Arial, sans-serif;

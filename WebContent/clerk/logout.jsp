@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>ログアウト</title>
+	<title>事務職員ログアウト</title>
 	<style>
 		.container {
 			margin-top: 100px;
