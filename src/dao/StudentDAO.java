@@ -1,35 +1,41 @@
-//package dao;
-//
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//
-//import util.DbUtil;
-//
-//public class StudentDAO {
-//
-//    // 学年（GRADE）を取得するメソッド
-//    public int getStudentGrade(String id) throws SQLException {
-//        int grade = -1; // デフォルト値（データがない場合）
-//
-//        String sql = "SELECT sc.GRADE FROM STUDENT s " +
-//                     "JOIN STUDENT_CLASS sc ON s.ID = sc.ID " +
-//                     "WHERE s.ID = ?";
-//
-//        try (Connection conn = DbUtil.getConnection();
-//             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-//
-//            pstmt.setString(1, id);
-//            ResultSet rs = pstmt.executeQuery();
-//
-//            if (rs.next()) {
-//                grade = rs.getInt("GRADE"); // GRADE を取得
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw e;
-//        }
-//        return grade;
-//    }
-//}
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import bean.Student;
+
+/**
+ * 学生テーブルにアクセスするDAO
+ * @author s_yajima
+ *
+ */
+public class StudentDAO extends DAO {
+	/**
+	 * 学生をすべて取得する
+	 * @return 学生のリスト
+	 * @throws Exception
+	 */
+	public List<Student> all() throws Exception {
+		// 学生リスト
+		List<Student> list = new ArrayList<Student>();
+
+		Connection con = getConnection();
+		PreparedStatement st = con.prepareStatement("select * from student");
+		ResultSet rs = st.executeQuery();
+
+		while (rs.next()) {
+			Student s = new Student();
+			s.setId(rs.getString("id"));
+			s.setName(rs.getString("name"));
+			list.add(s);
+		}
+
+		// 学生リストを返却
+		return list;
+	}
+
+}

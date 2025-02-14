@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -6,15 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理メニュー</title>
     <style>
-        /* 全体の基本スタイル */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        /* ヘッダーのデザイン */
         .header {
             display: flex;
             justify-content: space-between;
@@ -31,8 +29,6 @@
             display: flex;
             align-items: center;
         }
-
-        /* ナビゲーションメニュー */
         .nav-menu {
             display: flex;
             width: 100%;
@@ -44,102 +40,74 @@
             text-decoration: none;
             color: #333;
             border: 1px solid #ddd;
+            margin: 0;
             text-align: center;
-            width: 100%; /* 横幅いっぱい */
+            width: 100%;
             box-sizing: border-box;
         }
         .nav-menu a:hover {
             background-color: #f0f0f0;
         }
-
-        /* メインコンテンツエリア */
         .content {
             padding: 20px;
             text-align: center;
-            max-width: 1200px;
+            max-width: 8000px;
             margin: 0 auto;
         }
-
-        /* フォームとボタンのデザイン */
-        .tempoheader {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .tempoform-group {
-            margin-bottom: 20px;
-        }
-
-        .date-range {
+        .footer {
             display: flex;
+            justify-content: flex-start;
             align-items: center;
-            gap: 10px;
+            padding: 20px;
+            background-color: #f8f9fa;
         }
-
-        .date-range input {
-            width: calc(50% - 10px);
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .tempoform-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        button {
-            padding: 15px 30px; /* ボタンを大きくする */
-            font-size: 16px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
+        .footer button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            background-color: #ffffff;
             cursor: pointer;
             border-radius: 4px;
-            font-weight: bold; /* ボタンのテキストを太字に */
         }
-
-        button:hover {
-            background-color: #e2e2e2;
+        .footer button:hover {
+            background-color: #e2e6ea;
         }
-
-        .btn-back {
-            background-color: #f8d7da; /* 戻るボタンの色 */
-            border-color: #f5c6cb;
+        .login-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
         }
-
-        .btn-back:hover {
-            background-color: #f1b0b7;
-        }
-
-        .btn-submit {
-            background-color: #d4edda; /* 投稿ボタンの色 */
-            border-color: #c3e6cb;
-        }
-
-        .btn-submit:hover {
-            background-color: #c3e6cb;
+        .login-btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
+
     <div class="header">
         <h1>管理メニュー</h1>
-        <div class="user-info">
-            <span>全体アカウントでログイン中</span>
-            <a href="#">担当ページへ</a>
-        </div>
+
+        <!-- ログインボタンの表示 -->
+        <c:choose>
+            <c:when test="${empty user}">
+                <!-- ユーザーがログインしていない場合 -->
+                <a href="/Team-E/teacher/login-in.jsp" class="login-btn">ログイン</a>
+            </c:when>
+            <c:otherwise>
+                <!-- ユーザーがログインしている場合（例: ログアウトボタンを表示） -->
+                <a href="/Team-E/logout.jsp" class="login-btn">ログアウト</a>
+            </c:otherwise>
+        </c:choose>
     </div>
 
     <div class="nav-menu">
-        <a href="/shop_comp/teacher/calendar.jsp">カレンダー</a>
-        <a href="/shop_comp/teacher/contact.jsp">連絡</a>
-        <a href="/shop_comp/teacher/Money.jsp">集金</a>
-        <a href="/shop_comp/teacher/temperature.jsp">体温</a>
-        <a href="/shop_comp/teacher/children.jsp">児童</a>
+        <a href="/Team-E/teacher/login-out.jsp">カレンダー</a>
+        <a href="/Team-E/teacher/login-out.jsp">連絡</a>
+        <a href="/Team-E/teacher/login-out.jsp">集金</a>
+        <a href="/Team-E/teacher/login-out.jsp">体温</a>
+        <a href="/Team-E/teacher/login-out.jsp">児童</a>
     </div>
 
     <div class="content">
