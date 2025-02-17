@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DbUtil {
 
-    private static final String URL = "jdbc:h2:tcp://localhost/~/javad/teamE/SchoolOrganizer"; // H2データベースのURL
+    private static final String URL = "jdbc:h2:tcp://localhost/~/javasd/teamE/SchoolOrganizer"; // H2データベースのURL
     private static final String USER = "sa"; // デフォルトのユーザー名
     private static final String PASSWORD = ""; // デフォルトのパスワード（通常は空）
 
